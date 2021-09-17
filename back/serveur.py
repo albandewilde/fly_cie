@@ -15,10 +15,24 @@ flights = [
     {"id": 6, "from": "JFK", "to": "DTW"},
 ]
 
+tickets = []
+
 
 @srv.get("/")
 def root():
     return "fly cie, how may I help you ?"
+
+
+@srv.post("/book")
+def create_ticket(lastName, firstName, nationality, flightId):
+    ticket = {
+        "LastName": lastName,
+        "FirstName": firstName,
+        "Nationality": nationality,
+        "FlightId": flightId,
+    }
+    tickets.append(ticket)
+    return bottle.HTTPResponse(status=200, body=ticket)
 
 
 @srv.get("/flights")
