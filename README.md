@@ -13,5 +13,5 @@ GET :
 
 POST :  
 /book   
-=> body contains { lastName, firstName, nationality, flightId, price }
+=> body contains { lastName, firstName, nationality, flightId }
 => returns the created ticket
