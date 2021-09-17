@@ -19,7 +19,10 @@
     "@angular/platform-browser": "~11.1.2",
     "@angular/platform-browser-dynamic": "~11.1.2",
     "@angular/router": "~11.1.2",
+    "luxon": "^2.0.2",
+    "ng-zorro-antd": "^12.0.1",
     "rxjs": "~6.6.0",
+    "sweet-alert": "^2.0.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },
