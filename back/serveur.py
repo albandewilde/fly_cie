@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+# A faire lundi
+# - Ne pas envoyer toutes les info des flights
+# - Ajouté une condition des booking afin de ne pas vendre plus de places qu'il
+#   y en a (comme la SNCF) donc ajouté un mutex à la structure flights
+# - Mettre le comportement des "controlleurs" dans des fonctions
+# - Faire des TU parce que sinon c'est inmaintenable d'utiliser insomnia
+# - Faire un package avec flights (et les TU pour la fonction get_flight
+
 import json
 
 import bottle
@@ -69,7 +77,7 @@ tickets = []
 
 @srv.get("/")
 def root():
-    return "fly cie, how may I help you ?"
+    return "Fly cie this is Pam, how may I help you ?"
 
 
 @srv.post("/book")
