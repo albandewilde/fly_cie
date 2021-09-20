@@ -97,3 +97,18 @@ def get_round_trips( flight_ids, flights ):
             trips.append( flight )
 
     return (round_trips, trips)
+
+def book_round_trip( round_trip, flights, lname, fname, nat ):
+    result = []
+
+    f = get_flight( round_trip[0]["flight_id"] )
+    first_ticket = create_ticket( lname, fname, nat, f["flight_id"], f["price"] * 0.9 )
+    f["available_places"] -= 1
+    result.append( first_ticket )
+
+    second_f = get_flight( round_trip[0]["flight_id"] )
+    second_ticket = create_ticket( lname, fname, nat, second_f["flight_id"], second_f["price"] * 0.9 )
+    second_f["available_places"] -= 1
+    result.append( second_f )
+
+    return result
