@@ -19,19 +19,12 @@ def root():
 
 
 @srv.post("/book")
-def create_ticket():
-    flights["mux"].acquire()
-    body = json.loads(bottle.request.body.read().decode())
-    flight_id = body["flight_id"]
+def book_ticket():
 
-    if not has_available_place(flight_id, flights["list"]):
-        flights["mux"].release()
-        return bottle.HTTPResponse(status=400, body="No available place sorry bro.")
+    client_tickets = book_tickets()
+    jsn_tickets = json.dumps(client_tickets)
 
-    ticket = book_ticket(body["last_name"], body["first_name"], body["nationality"], int(body["flight_id"]))
-
-    flights["mux"].release()
-    return bottle.HTTPResponse(status=200, body=ticket)
+    return bottle.HTTPResponse(status=200, body=jsn_tickets)
 
 
 @srv.get("/flights")

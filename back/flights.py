@@ -72,21 +72,34 @@ def has_available_place(flight_id, flights):
                 return False
 
 
-# Global ticket
-# Global flight
-def book_ticket(
-    user_last_name, user_first_name, nationality, flight_id, tickets, flights
-):
-    ticket = {
-        "last_name": user_last_name,
-        "first_name": user_first_name,
-        "nationality": nationality,
-        "flight_id": int(flight_id),
-        "price": get_flight(int(flight_id), flights)["price"],
-        "creation_date": str(datetime.datetime.now()),
-    }
-    tickets.append(ticket)
+def book_tickets(fname, lname, nat, flight_ids, tickets, flights):
+    # Lock flights
+    flights["mux"].acquire()
 
-    get_flight(flight_id, flights)["available_places"] -= 1
+    # Check if there is place
+    for fly_id in flight_ids:
+        if not has_available_place(fly_id, flights["list"]):
+            flights["mux"].release()
+            raise Exception(f"Flight {fly_id} has no available place")
 
-    return ticket
+    new_tickets = []
+
+    # Get round trip
+    round_trips, trips = get_round_trips(flight_ids, flights)
+
+    # Book tickets
+    # Book round trips
+    for round_trip in round_trips:
+        round_trip_tickets = book_round_trip(round_trip, flights, lname, fname, nat)
+        new_tickets.extend(round_trip_tickets)
+        tickets.extends(round_trip_tickets)
+    # Book tickets
+    for trip in trips:
+        ticket = book_trip(trip, flights, lname, fname, nat)
+        new_tickets.append(ticket)
+        tickets.append(ticket)
+
+    # Free the lock
+    flights["mux"].release()
+
+    return new_tickets
