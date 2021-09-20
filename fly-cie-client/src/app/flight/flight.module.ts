@@ -6,6 +6,8 @@ import { UiModule } from '../ui/ui.module';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @NgModule({
   declarations: [
@@ -15,9 +17,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     CommonModule,
     FlightRoutingModule,
     UiModule,
+    FormsModule,
+    ReactiveFormsModule,
     NzFormModule,
     NzSelectModule,
-    // NzDatePickerModule
+    NzDatePickerModule,
+    NzTableModule
   ]
 })
 export class FlightModule { }
