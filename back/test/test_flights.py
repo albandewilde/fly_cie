@@ -1,3 +1,4 @@
+from multprocessing import Lock
 import pytest
 
 from flights import flights, get_flight, has_available_place
@@ -23,14 +24,17 @@ def test_get_non_existing_flight_return_none():
 def test_available_flight():
     assert has_available_place(
         1,
-        [
-            {
-                "id": 1,
-                "from": "JFK",
-                "to": "DTW",
-                "available_places": 300,
-                "total_places": 300,
-                "price": 300,
-            },
-        ],
+        {
+            "list": [
+                {
+                    "id": 1,
+                    "from": "JFK",
+                    "to": "DTW",
+                    "available_places": 300,
+                    "total_places": 300,
+                    "price": 300,
+                },
+            ],
+            "mux": Lock(),
+        },
     )
