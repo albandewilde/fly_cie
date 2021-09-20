@@ -16,18 +16,20 @@ srv = bottle.Bottle()
 
 @srv.get("/")
 def root():
+    response.set_header("Access-Control-Allow-Origin", "*")
     return "Fly cie this is Pam, how may I help you ?"
 
 
 @srv.post("/book")
 def book_ticket():
+    response.set_header("Access-Control-Allow-Origin", "*")
     client_tickets = book_tickets(
-        body["first_name"], 
-        body["last_name"], 
-        body["nationality"], 
-        body["flight_ids"], 
-        tickets, 
-        flights 
+        body["first_name"],
+        body["last_name"],
+        body["nationality"],
+        body["flight_ids"],
+        tickets,
+        flights,
     )
     jsn_tickets = json.dumps(client_tickets)
 
@@ -36,6 +38,7 @@ def book_ticket():
 
 @srv.get("/flights")
 def get_flights():
+    response.set_header("Access-Control-Allow-Origin", "*")
     return {"flights": flights["list"]}
 
 
