@@ -98,7 +98,9 @@ def get_round_trips(flight_ids, flights):
     return (round_trips, trips)
 
 
-def book_tickets(fname, lname, nat, flight_ids, lounge_supplement, currency, tickets, flights):
+def book_tickets(
+    fname, lname, nat, flight_ids, lounge_supplement, currency, tickets, flights
+):
     # Lock flights
     flights["mux"].acquire()
 
@@ -124,7 +126,9 @@ def book_tickets(fname, lname, nat, flight_ids, lounge_supplement, currency, tic
 
     # Book tickets
     for trip in trips:
-        ticket = book_trip(trip, flights["list"], lname, fname, nat, lounge_supplement, currency)
+        ticket = book_trip(
+            trip, flights["list"], lname, fname, nat, lounge_supplement, currency
+        )
         new_tickets.append(ticket)
         tickets.append(ticket)
 
@@ -134,12 +138,13 @@ def book_tickets(fname, lname, nat, flight_ids, lounge_supplement, currency, tic
     return new_tickets
 
 
-def book_round_trip(round_trip, flights, lname, fname, nat, lounge_supplement, currency):
+def book_round_trip(
+    round_trip, flights, lname, fname, nat, lounge_supplement, currency
+):
     result = []
 
     f = get_flight(round_trip[0]["id"], flights)
     first_ticket = create_ticket(
-        lname, fname, nat, f["id"], f["price"] * 0.9, lounge_supplement
         lname, fname, nat, f["id"], f["price"] * 0.9, lounge_supplement, currency
     )
     f["available_places"] -= 1
@@ -155,9 +160,11 @@ def book_round_trip(round_trip, flights, lname, fname, nat, lounge_supplement, c
     return result
 
 
-def book_trip(trip, flights, lname, fname, nat, lounge_supplement):
+def book_trip(trip, flights, lname, fname, nat, lounge_supplement, currency):
     flight = get_flight(trip["id"], flights)
-    ticket = create_ticket(lname, fname, nat, flight["id"], flight["price"], lounge_supplement, currency)
+    ticket = create_ticket(
+        lname, fname, nat, flight["id"], flight["price"], lounge_supplement, currency
+    )
     flight["available_places"] -= 1
 
     return ticket

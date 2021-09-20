@@ -296,7 +296,7 @@ def test_booking_ticket():
 
     all_tickets = []
     tickets = book_tickets(
-        "fname", "lname", "FR", [1, 4, 3], False, all_tickets, flights
+        "fname", "lname", "FR", [1, 4, 3], False, "", all_tickets, flights
     )
 
     assert tickets == all_tickets
