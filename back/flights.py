@@ -1,5 +1,6 @@
 from multiprocessing import Lock
-
+import datetime
+from tickets import tickets
 
 flights = {
     "list": [
@@ -69,3 +70,18 @@ def has_available_place(flight_id, flights):
                 return True
             else:
                 return False
+
+def book_ticket(user_last_name, user_first_name, nationality, flight_id):
+    ticket = {
+        "last_name": user_last_name,
+        "first_name": user_first_name,
+        "nationality": nationality,
+        "flight_id": int(flight_id),
+        "price": get_flight(int(flight_id), flights["list"])["price"],
+        "creation_date": str(datetime.datetime.now())
+    }
+    tickets.append(ticket)
+
+    get_flight(flight_id, flights["list"])["available_places"] -= 1
+
+    return ticket
