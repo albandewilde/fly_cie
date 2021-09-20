@@ -8,7 +8,8 @@ import json
 
 import bottle
 
-from flights import flights, has_available_place, book_ticket
+from flights import flights, has_available_place, book_tickets
+from tickets import tickets
 
 srv = bottle.Bottle()
 
@@ -20,8 +21,14 @@ def root():
 
 @srv.post("/book")
 def book_ticket():
-
-    client_tickets = book_tickets()
+    client_tickets = book_tickets(
+        body["first_name"], 
+        body["last_name"], 
+        body["nationality"], 
+        body["flight_ids"], 
+        tickets, 
+        flights 
+    )
     jsn_tickets = json.dumps(client_tickets)
 
     return bottle.HTTPResponse(status=200, body=jsn_tickets)
