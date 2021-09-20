@@ -1,6 +1,6 @@
-.PHONY: test start build-no-cache
+.PHONY: run build-no-cache test
 
-start:
+run:
 	@docker-compose up --build
 
 build-no-cache:
