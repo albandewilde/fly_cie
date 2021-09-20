@@ -1,6 +1,5 @@
 from multiprocessing import Lock
-import datetime
-from tickets import tickets
+from tickets import tickets, create_ticket
 
 flights = {
     "list": [
@@ -71,17 +70,87 @@ def has_available_place(flight_id, flights):
             else:
                 return False
 
-def book_ticket(user_last_name, user_first_name, nationality, flight_id):
-    ticket = {
-        "last_name": user_last_name,
-        "first_name": user_first_name,
-        "nationality": nationality,
-        "flight_id": int(flight_id),
-        "price": get_flight(int(flight_id), flights["list"])["price"],
-        "creation_date": str(datetime.datetime.now())
-    }
-    tickets.append(ticket)
 
-    get_flight(flight_id, flights["list"])["available_places"] -= 1
+def get_round_trips(flight_ids, flights):
+    round_trips = []
+    trips = []
+
+    for id in flight_ids:
+        flight = get_flight(id, flights)
+        for end_id in flight_ids[id + 1:]:
+            second_flight = get_flight(end_id, flights)
+            if (
+                flight["from"] == second_flight["to"]
+                and flight["to"] == second_flight["from"]
+            ):
+                round_trips.append((flight, second_flight))
+                flight_ids.remove(end_id)
+
+                break
+        else:
+            trips.append(flight)
+
+    print(round_trips, trips)
+    return (round_trips, trips)
+
+
+def book_tickets(fname, lname, nat, flight_ids, lounge_supplement, tickets, flights):
+    # Lock flights
+    flights["mux"].acquire()
+
+    # Check if there is place
+    for fly_id in flight_ids:
+        if not has_available_place(fly_id, flights["list"]):
+            flights["mux"].release()
+            raise Exception(f"Flight {fly_id} has no available place")
+
+    new_tickets = []
+
+    # Get round trip
+    round_trips, trips = get_round_trips(flight_ids, flights["list"])
+
+    # Book tickets
+    # Book round trips
+    for round_trip in round_trips:
+        round_trip_tickets = book_round_trip(
+            round_trip, flights["list"], lname, fname, nat, lounge_supplement
+        )
+        new_tickets.extend(round_trip_tickets)
+        tickets.extend(round_trip_tickets)
+
+    # Book tickets
+    for trip in trips:
+        ticket = book_trip(trip, flights["list"], lname, fname, nat, lounge_supplement)
+        new_tickets.append(ticket)
+        tickets.append(ticket)
+
+    # Free the lock
+    flights["mux"].release()
+
+    return new_tickets
+
+
+def book_round_trip(round_trip, flights, lname, fname, nat, lounge_supplement):
+    result = []
+
+    f = get_flight(round_trip[0]["id"], flights)
+    first_ticket = create_ticket(lname, fname, nat, f["id"], f["price"] * 0.9, lounge_supplement)
+    f["available_places"] -= 1
+    result.append(first_ticket)
+
+    second_f = get_flight(round_trip[0]["id"], flights)
+    second_ticket = create_ticket(
+        lname, fname, nat, second_f["id"], second_f["price"] * 0.9, lounge_supplement
+    )
+    second_f["available_places"] -= 1
+    result.append(second_ticket)
+
+    return result
+
+
+def book_trip(trip, flights, lname, fname, nat, lounge_supplement):
+    flight = get_flight(trip["id"], flights)
+    ticket = create_ticket(lname, fname, nat, flight["id"], flight["price"], lounge_supplement)
+    flight["available_places"] -= 1
 
     return ticket

@@ -1,4 +1,5 @@
 # fly_cie
+
 School project for architecture course
 
 # Endpoints
@@ -13,11 +14,33 @@ GET :
     "id": 1,
     "from": "DTW",
     "to": "CDG",
+    "available_places": 700,
+    "total_places": 700,
     "price": 700
 }
 ```
 
 POST :  
 /book   
-=> body contains { lastName, firstName, nationality, flightId }
+=> body contains
+```json
+{
+    "last_name": "string",
+    "first_name": "string",
+    "nationality": "string",
+    "flight_ids": [1, 2, 3] ,
+    "lounge_supplement": true
+}
+```
 => returns the created ticket
+```json
+{
+    "last_name": "string",
+    "first_name": "string",
+    "nationality": "string",
+    "flight_id": 15,
+    "price": 300,
+    "creation_date": "string",
+    "lounge_supplement": true
+}
+```
