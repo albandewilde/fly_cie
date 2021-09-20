@@ -4,6 +4,8 @@ import { FlightListPageComponent } from './pages/flight-list-page/flight-list-pa
 import { FlightRoutingModule } from './flight-routing.module';
 import { UiModule } from '../ui/ui.module';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @NgModule({
   declarations: [
@@ -14,6 +16,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     FlightRoutingModule,
     UiModule,
     NzFormModule,
+    NzSelectModule,
+    // NzDatePickerModule
   ]
 })
 export class FlightModule { }

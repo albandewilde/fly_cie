@@ -1,21 +1,21 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Flight } from '../models/flight.models';
+import { ApiFlight, Flight } from '../models/flight.models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StatsApiService {
+export class FlightApiService {
   private baseUrl: string;
 
   constructor(
     private httpClient: HttpClient,
   ) {
-    this.baseUrl = `http://localhost:7860/stats`;
+    this.baseUrl = `http://localhost:7860`;
   }
 
-  public getFlights(): Observable<Flight> {
-    return this.httpClient.get<Flight>(`${this.baseUrl}`);
+  public getFlights(): Observable<ApiFlight> {
+    return this.httpClient.get<ApiFlight>(`${this.baseUrl}/flights`);
   }
 }

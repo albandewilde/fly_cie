@@ -36,6 +36,7 @@ def create_ticket():
 
 @srv.get("/flights")
 def get_flights():
+    bottle.response.set_header('Access-Control-Allow-Origin', '*')
     return {"flights": flights["list"]}
 
 

@@ -70,7 +70,8 @@
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "fly-cie-client:build:production"
+                            "browserTarget": "fly-cie-client:build:production",
+                            "proxyConfig": "src/proxy.conf.json"
                         }
                     }
                 },
