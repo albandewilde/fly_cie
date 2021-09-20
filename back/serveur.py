@@ -21,13 +21,14 @@ def root():
 
 @srv.post("/book")
 def book_ticket():
+    body = json.loads(bottle.request.body.read().decode())
     client_tickets = book_tickets(
         body["first_name"], 
         body["last_name"], 
         body["nationality"], 
         body["flight_ids"], 
         tickets, 
-        flights 
+        flights
     )
     jsn_tickets = json.dumps(client_tickets)
 
@@ -39,4 +40,4 @@ def get_flights():
     return {"flights": flights["list"]}
 
 
-srv.run(host="0.0.0.0", port="7860")
+srv.run(host="0.0.0.0", port="7860", debug=True)
