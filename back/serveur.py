@@ -27,7 +27,7 @@ def create_ticket():
     body = json.loads(bottle.request.body.read().decode())
     flight_id = body["flight_id"]
 
-    if not has_available_place(flight_id):
+    if not has_available_place(flight_id, flights["list"]):
         flights["mux"].release()
         return bottle.HTTPResponse(status=400, body="No available place sorry bro.")
 
@@ -37,11 +37,11 @@ def create_ticket():
         "nationality": body["nationality"],
         "flight_id": int(body["flight_id"]),
         "price": get_flight(int(flight_id), flights["list"])["price"],
-        "creation_date": datetime.datetime.now()
+        "creation_date": str(datetime.datetime.now())
     }
     tickets.append(ticket)
 
-    get_flight(flight_id)["available_places"] -= 1
+    get_flight(flight_id, flights["list"])["available_places"] -= 1
     
     flights["mux"].release()
     return bottle.HTTPResponse(status=200, body=ticket)

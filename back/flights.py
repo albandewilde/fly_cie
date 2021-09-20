@@ -57,12 +57,12 @@ flights = {
 }
 
 def get_flight(flight_id, flights):
-    for flight in flights["list"]:
+    for flight in flights:
         if flight["id"] == flight_id:
             return flight
 
 def has_available_place(flight_id, flights):
-    for flight in flights["list"]:
+    for flight in flights:
         if flight["id"] == flight_id:
             if flight["available_places"] > 0:
                 return True
