@@ -1,4 +1,5 @@
 # fly_cie
+
 School project for architecture course
 
 # Endpoints
@@ -19,5 +20,25 @@ GET :
 
 POST :  
 /book   
-=> body contains { lastName, firstName, nationality, flightId }
+=> body contains
+```json
+{
+    "last_name": "string",
+    "first_name": "string",
+    "nationality": "string",
+    "flight_ids": [1, 2, 3] ,
+    "lounge_supplement": true
+}
+```
 => returns the created ticket
+```json
+{
+    "last_name": "string",
+    "first_name": "string",
+    "nationality": "string",
+    "flight_id": 15,
+    "price": 300,
+    "creation_date": "string",
+    "lounge_supplement": true
+}
+```
