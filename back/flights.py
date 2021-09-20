@@ -75,22 +75,26 @@ def get_round_trips(flight_ids, flights):
     round_trips = []
     trips = []
 
-    for id in flight_ids:
-        flight = get_flight(id, flights)
-        for end_id in flight_ids[id + 1:]:
-            second_flight = get_flight(end_id, flights)
+    idx = 0
+    while idx < len(flight_ids):
+        flight = get_flight(flight_ids[idx], flights)
+        index = 1
+        while index < len(flight_ids):
+            second_flight = get_flight(flight_ids[index], flights)
             if (
                 flight["from"] == second_flight["to"]
                 and flight["to"] == second_flight["from"]
             ):
                 round_trips.append((flight, second_flight))
-                flight_ids.remove(end_id)
-
+                flight_ids.pop(index)
+                flight_ids.pop(idx)
                 break
+            index += 1
+
         else:
             trips.append(flight)
+            idx += 1
 
-    print(round_trips, trips)
     return (round_trips, trips)
 
 
@@ -134,11 +138,13 @@ def book_round_trip(round_trip, flights, lname, fname, nat, lounge_supplement):
     result = []
 
     f = get_flight(round_trip[0]["id"], flights)
-    first_ticket = create_ticket(lname, fname, nat, f["id"], f["price"] * 0.9, lounge_supplement)
+    first_ticket = create_ticket(
+        lname, fname, nat, f["id"], f["price"] * 0.9, lounge_supplement
+    )
     f["available_places"] -= 1
     result.append(first_ticket)
 
-    second_f = get_flight(round_trip[0]["id"], flights)
+    second_f = get_flight(round_trip[1]["id"], flights)
     second_ticket = create_ticket(
         lname, fname, nat, second_f["id"], second_f["price"] * 0.9, lounge_supplement
     )
@@ -150,7 +156,9 @@ def book_round_trip(round_trip, flights, lname, fname, nat, lounge_supplement):
 
 def book_trip(trip, flights, lname, fname, nat, lounge_supplement):
     flight = get_flight(trip["id"], flights)
-    ticket = create_ticket(lname, fname, nat, flight["id"], flight["price"], lounge_supplement)
+    ticket = create_ticket(
+        lname, fname, nat, flight["id"], flight["price"], lounge_supplement
+    )
     flight["available_places"] -= 1
 
     return ticket
