@@ -8,17 +8,16 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { RouterModule } from '@angular/router';
 
 
-@NgModule({
+@NgModule( {
   declarations: [
     HomePageComponent
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule,
     UiModule,
-    HomeRoutingModule,
     NzButtonModule,
-    RouterModule
+    RouterModule,
+    HomeRoutingModule,
   ]
-})
+} )
 export class HomeModule { }
