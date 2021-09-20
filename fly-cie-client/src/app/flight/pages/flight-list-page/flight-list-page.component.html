@@ -5,22 +5,20 @@
             <thead>
                 <th>De</th>
                 <th>A</th>
-                <th>Places disponible</th>
-                <th>Taille du vol</th>
+                <th>Prix</th>
             </thead>
             <tbody>
                 <tr *ngFor="let flight of flightsList">
                     <td>{{flight.from}}</td>
                     <td>{{flight.to}}</td>
-                    <td>{{flight.available_places}}</td>
-                    <td>{{flight.total_places}}</td>
+                    <td>{{flight.price}} €</td>
                 </tr>
             </tbody>
         </nz-table>
     </div>
 
     <div>
-        <form nz-form>
+        <form nz-form (ngSubmit)="submitForm()">
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="from">Départ</nz-form-label>
                 <nz-form-control [nzSpan]="4">
@@ -30,7 +28,7 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="to">Destination</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="book.to">Destination</nz-form-label>
                 <nz-form-control [nzSpan]="4">
                     <nz-select class="select">
                         <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport"></nz-option>
@@ -38,9 +36,26 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="date">Date</nz-form-label>
+                <nz-form-label [nzSpan]="6">Nom</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <nz-date-picker class="select" nzFormat="dd/mm/yyyy"></nz-date-picker>
+                    <input nz-input placeholder="Nom de famille">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="this.book.first_name">Prénom</nz-form-label>
+                <nz-form-control [nzSpan]="4">
+                    <input nz-input placeholder="Prénom">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6">Nationalité</nz-form-label>
+                <nz-form-control [nzSpan]="4">
+                    <input nz-input placeholder="Nationalité">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary">Réserver</button>
                 </nz-form-control>
             </nz-form-item>
         </form>

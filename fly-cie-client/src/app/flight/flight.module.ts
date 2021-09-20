@@ -8,6 +8,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     NzFormModule,
     NzSelectModule,
     NzDatePickerModule,
-    NzTableModule
+    NzTableModule,
+    NzInputModule
   ]
 })
 export class FlightModule { }

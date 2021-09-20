@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FlightApiService } from 'src/app/core/api/flight-api.service';
+import { Book } from 'src/app/core/models/book.models';
 import { ApiFlight, Flight } from 'src/app/core/models/flight.models';
 
 @Component({
@@ -11,6 +12,7 @@ export class FlightListPageComponent implements OnInit {
 
   public flightsList: Array<Flight>
   public airports: Array<string> = [];
+  public book: Book
 
   constructor(
     private _flightApiService: FlightApiService
@@ -25,6 +27,10 @@ export class FlightListPageComponent implements OnInit {
       this.airports = this.airports.filter((value, index) => this.airports.indexOf(value) === index);
     });
     console.log(this.airports);
+  }
+
+  submitForm() {
+    console.log(this.book)
   }
 
 }
