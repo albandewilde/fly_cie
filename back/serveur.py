@@ -10,6 +10,7 @@
 
 import json
 import datetime
+from multiprocessing import Process, Lock
 
 import bottle
 
@@ -26,10 +27,12 @@ def root():
 
 @srv.post("/book")
 def create_ticket():
+    flights["mux"].acquire()
     body = json.loads(bottle.request.body.read().decode())
     flight_id = body["flight_id"]
 
     if not has_available_place(flight_id):
+        flights["mux"].release()
         return bottle.HTTPResponse(status=400, body="No available place sorry bro.")
 
     ticket = {
@@ -43,7 +46,8 @@ def create_ticket():
     tickets.append(ticket)
 
     get_flight(flight_id)["available_places"] -= 1
-
+    
+    flights["mux"].release()
     return bottle.HTTPResponse(status=200, body=ticket)
 
 

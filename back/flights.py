@@ -1,3 +1,5 @@
+from multiprocessing import Lock
+
 flights = [
     {
         "id": 1,
@@ -49,6 +51,10 @@ flights = [
     },
 ]
 
+flights = {
+    "list": flights,
+    "mux": Lock()
+}
 
 def get_flight(flight_id, flights):
     for flight in flights:
