@@ -1,4 +1,7 @@
+import datetime
+
 tickets = []
+
 
 def create_ticket(user_last_name, user_first_name, nationality, flight_id, price):
     return {
