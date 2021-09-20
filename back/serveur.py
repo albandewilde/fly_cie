@@ -30,6 +30,7 @@ def book_ticket():
         body["nationality"],
         body["flight_ids"],
         body["lounge_supplement"],
+        body["currency"],
         tickets,
         flights,
     )
@@ -42,6 +43,5 @@ def book_ticket():
 def get_flights():
     bottle.response.set_header("Access-Control-Allow-Origin", "*")
     return {"flights": flights["list"]}
-
 
 srv.run(host="0.0.0.0", port="7860", debug=True)

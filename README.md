@@ -28,8 +28,9 @@ POST :
     "last_name": "string",
     "first_name": "string",
     "nationality": "string",
-    "flight_ids": [1, 2, 3] ,
-    "lounge_supplement": true
+    "flight_ids": [1, 2, 3],
+    "lounge_supplement": true,
+    "currency": "string"
 }
 ```
 => returns the created ticket
@@ -41,6 +42,8 @@ POST :
     "flight_id": 15,
     "price": 300,
     "creation_date": "string",
-    "lounge_supplement": true
+    "lounge_supplement": true,
+    "rate": 1,
+    "currency": "string"
 }
 ```
