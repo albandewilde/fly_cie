@@ -14,6 +14,8 @@ GET :
     "id": 1,
     "from": "DTW",
     "to": "CDG",
+    "available_places": 700,
+    "total_places": 700,
     "price": 700
 }
 ```
