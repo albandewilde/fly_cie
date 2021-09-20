@@ -116,7 +116,7 @@ def book_tickets(fname, lname, nat, flight_ids, tickets, flights):
             round_trip, flights["list"], lname, fname, nat
         )
         new_tickets.extend(round_trip_tickets)
-        tickets.extends(round_trip_tickets)
+        tickets.extend(round_trip_tickets)
     # Book tickets
     for trip in trips:
         ticket = book_trip(trip, flights["list"], lname, fname, nat)
@@ -132,12 +132,12 @@ def book_tickets(fname, lname, nat, flight_ids, tickets, flights):
 def book_round_trip(round_trip, flights, lname, fname, nat):
     result = []
 
-    f = get_flight(round_trip[0]["id"])
+    f = get_flight(round_trip[0]["id"], flights)
     first_ticket = create_ticket(lname, fname, nat, f["id"], f["price"] * 0.9)
     f["available_places"] -= 1
     result.append(first_ticket)
 
-    second_f = get_flight(round_trip[0]["id"])
+    second_f = get_flight(round_trip[0]["id"], flights)
     second_ticket = create_ticket(
         lname, fname, nat, second_f["id"], second_f["price"] * 0.9
     )
