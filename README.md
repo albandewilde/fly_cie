@@ -2,7 +2,7 @@
 
 School project for architecture course
 
-# Endpoints
+# Backend endpoints
 
 The server run on ther port `7860` on all interfaces
 
@@ -46,4 +46,27 @@ POST :
     "rate": 1,
     "currency": "string"
 }
+```
+
+GET:  
+/currencies  
+=> List of available currencies (without rate)
+```json
+["USD", "HKD"]
+```
+
+# Currency converting service
+
+There is a service that we'll use to make the currency convertion.  
+The server listen on port `7861` on all interfaces.
+
+GET:  
+/<currency>  
+=> The body contain a float that is the rate of the <currency>
+
+GET:  
+/currencies  
+=> List of available currencies (without rate)
+```json
+["USD", "HKD"]
 ```
