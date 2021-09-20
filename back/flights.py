@@ -142,7 +142,7 @@ def book_round_trip(round_trip, flights, lname, fname, nat):
         lname, fname, nat, second_f["id"], second_f["price"] * 0.9
     )
     second_f["available_places"] -= 1
-    result.append(second_f)
+    result.append(second_ticket)
 
     return result
 
