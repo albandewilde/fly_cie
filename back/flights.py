@@ -77,17 +77,20 @@ def get_round_trips(flight_ids, flights):
 
     for id in flight_ids:
         flight = get_flight(id, flights)
-        for end_id in flight_ids[id:]:
-            second_flight = get_flight(id, flights)
+        for end_id in flight_ids[id + 1 :]:
+            second_flight = get_flight(end_id, flights)
             if (
                 flight["from"] == second_flight["to"]
                 and flight["to"] == second_flight["from"]
             ):
-                round_trips.append((flight, plane))
+                round_trips.append((flight, second_flight))
+                flight_ids.remove(end_id)
+
                 break
         else:
             trips.append(flight)
 
+    print(round_trips, trips)
     return (round_trips, trips)
 
 
