@@ -1,0 +1,121 @@
+@import '../node_modules/ng-zorro-antd/style/entry.less';
+@import '../node_modules/ng-zorro-antd/button/style/entry.less';
+@import '../node_modules/ng-zorro-antd/grid/style/entry.less';
+@import '../node_modules/ng-zorro-antd/menu/style/entry.less';
+@import '../node_modules/ng-zorro-antd/card/style/entry.less';
+@import '../node_modules/ng-zorro-antd/tag/style/entry.less';
+@import '../node_modules/ng-zorro-antd/back-top/style/entry.less';
+@import '../node_modules/ng-zorro-antd/auto-complete/style/entry.less';
+@import '../node_modules/ng-zorro-antd/breadcrumb/style/entry.less';
+@import '../node_modules/ng-zorro-antd/icon/style/entry.less';
+@import '../node_modules/ng-zorro-antd/switch/style/entry.less';
+@import '../node_modules/ng-zorro-antd/dropdown/style/entry.less';
+@import '../node_modules/ng-zorro-antd/avatar/style/entry.less';
+@import '../node_modules/ng-zorro-antd/timeline/style/entry.less';
+@import '../node_modules/ng-zorro-antd/table/style/entry.less';
+@import '../node_modules/ng-zorro-antd/form/style/entry.less';
+@import '../node_modules/ng-zorro-antd/date-picker/style/entry.less';
+@import '../node_modules/ng-zorro-antd/input/style/entry.less';
+
+
+@import 'styles/_color.less';
+
+// Background color for `<body>`
+@body-background: @background-color;
+// Base background color for most components
+@component-background: @normal-color;
+
+@primary-color: @accent-color;
+@text-color: @light-text-color;
+@text-color-secondary: @darkened-text-color;
+@icon-color-hover: @accent-color;
+@text-selection-bg: @primary-color;
+@select-item-active-bg: @background-color;
+@item-hover-bg: @background-color;
+@item-active-bg: @background-color;
+@font-size-base: 16px;
+@font-size-lg: @font-size-base + 2px;
+@font-size-sm: @font-size-base - 2px;
+@heading-1-size: ceil(@font-size-base * 2.71);
+@heading-2-size: ceil(@font-size-base * 2.14);
+@heading-3-size: ceil(@font-size-base * 1.71);
+@heading-4-size: ceil(@font-size-base * 1.42);
+@line-height-base: 1.5;
+
+// BUTTONS
+@btn-font-weight: 400;
+
+// ICONFONT
+@iconfont-css-prefix: anticon;
+
+// LINK
+@link-color: @white;
+@link-hover-color: @accent-color;
+@link-active-color: #6cb670;
+@link-decoration: none;
+@link-hover-decoration: none;
+
+// MENU
+@menu-inline-toplevel-item-height: 40px;
+@menu-item-height: 40px;
+@menu-collapsed-width: 80px;
+@menu-bg: transparent;
+@menu-item-color: @darkened-text-color;
+@menu-highlight-color: @accent-color;
+@menu-item-active-bg: transparent;
+@menu-item-active-border-width: 0px;
+@menu-item-font-size: @font-size-base;
+@menu-item-boundary-margin: 0px;
+@border-width-base: 0px;
+.@{menu-prefix-cls} {
+    &-submenu-popup {
+        width: fit-content;
+    }
+}
+
+// DROPDOWN
+@dropdown-selected-color: @accent-color !important;
+
+// CARD
+@card-head-color: @white;
+@card-actions-background: transparent;
+@card-background: @component-background;
+@card-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+@card-hover-border: @accent-color;
+
+// TAG
+@tag-default-bg: @auxiliary-color;
+@tag-default-color: @white;
+@tag-font-size: @font-size-sm;
+
+// BACKTOP
+@back-top-bg: @darkened-text-color;
+@back-top-hover-bg: @accent-color;
+
+// BREADCRUMB
+@breadcrumb-link-color: @darkened-text-color;
+@breadcrumb-link-color-hover: @accent-color;
+
+// SWITCH
+@switch-color: @auxiliary-color;
+nz-switch.text-only .@{switch-prefix-cls} {
+    padding: 0 1em;
+
+    &-inner {
+        text-align: center;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    &::after {
+        display: none;
+    }
+}
+
+// AVATAR
+@avatar-bg: @background-color;
+@avatar-color: @accent-color;
+
+// TIMELINE
+@timeline-color: @accent-color;
+@timeline-dot-bg: @background-color;

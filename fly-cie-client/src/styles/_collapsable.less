@@ -1,0 +1,25 @@
+.collapse-input(
+    @background-color,
+    @color,
+    @font-size: 1rem,
+    @animation-duration: 0.3s,
+    @offset: $height
+) {
+    transition-duration: @animation-duration;
+    transition-property: width, padding;
+  
+    &:not(:focus):placeholder-shown {
+      width: @offset;
+      
+      padding: 0;
+      background-color: @background-color;
+  
+      color: transparent;
+      &::placeholder { color: transparent; }
+
+    //   background-image: url('/assets/icon/plus.svg');
+      background-size: $height / 2;
+      background-position: $height / 4;
+      background-repeat: no-repeat;
+    }
+  }
