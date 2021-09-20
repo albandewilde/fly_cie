@@ -1,4 +1,4 @@
-from multprocessing import Lock
+from multiprocessing import Lock
 import pytest
 
 from flights import flights, get_flight, has_available_place
