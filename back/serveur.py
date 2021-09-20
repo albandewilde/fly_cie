@@ -1,97 +1,42 @@
 #!/usr/bin/env python3
 
+# A faire lundi
+# - Mettre le comportement des "controlleurs" dans des fonctions
+# - Faire des TU parce que sinon c'est inmaintenable d'utiliser insomnia
+
 import json
 
 import bottle
 
+from flights import flights, has_available_place, book_ticket
+
 srv = bottle.Bottle()
-
-flights = [
-    {
-        "id": 1,
-        "from": "DTW",
-        "to": "CDG",
-        "available_places": 700,
-        "total_places": 700,
-        "price": 700,
-    },
-    {
-        "id": 2,
-        "from": "DTW",
-        "to": "JFK",
-        "available_places": 300,
-        "total_places": 300,
-        "price": 300,
-    },
-    {
-        "id": 3,
-        "from": "CDG",
-        "to": "JFK",
-        "available_places": 1000,
-        "total_places": 1000,
-        "price": 1000,
-    },
-    {
-        "id": 4,
-        "from": "CDG",
-        "to": "DTW",
-        "available_places": 700,
-        "total_places": 700,
-        "price": 700,
-    },
-    {
-        "id": 5,
-        "from": "JFK",
-        "to": "CDG",
-        "available_places": 1000,
-        "total_places": 1000,
-        "price": 1000,
-    },
-    {
-        "id": 6,
-        "from": "JFK",
-        "to": "DTW",
-        "available_places": 300,
-        "total_places": 300,
-        "price": 300,
-    },
-]
-
-
-def get_flight(flight_id):
-    for flight in flights:
-        if flight["id"] == flight_id:
-            return flight
-
-
-tickets = []
 
 
 @srv.get("/")
 def root():
-    return "fly cie, how may I help you ?"
+    return "Fly cie this is Pam, how may I help you ?"
 
 
 @srv.post("/book")
 def create_ticket():
+    flights["mux"].acquire()
     body = json.loads(bottle.request.body.read().decode())
+    flight_id = body["flight_id"]
 
-    ticket = {
-        "last_name": body["last_name"],
-        "first_name": body["first_name"],
-        "nationality": body["nationality"],
-        "flight_id": int(body["flight_id"]),
-        "price": get_flight(int(body["flight_id"]))["price"],
-    }
+    if not has_available_place(flight_id, flights["list"]):
+        flights["mux"].release()
+        return bottle.HTTPResponse(status=400, body="No available place sorry bro.")
 
-    tickets.append(ticket)
+    ticket = book_ticket(body["last_name"], body["first_name"], body["nationality"], int(body["flight_id"]))
 
+    flights["mux"].release()
     return bottle.HTTPResponse(status=200, body=ticket)
 
 
 @srv.get("/flights")
 def get_flights():
-    return {"flights": flights}
+    return {"flights": flights["list"]}
 
 
 srv.run(host="0.0.0.0", port="7860")
