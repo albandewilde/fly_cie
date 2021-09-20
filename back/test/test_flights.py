@@ -24,17 +24,14 @@ def test_get_non_existing_flight_return_none():
 def test_available_flight():
     assert has_available_place(
         1,
-        {
-            "list": [
-                {
-                    "id": 1,
-                    "from": "JFK",
-                    "to": "DTW",
-                    "available_places": 300,
-                    "total_places": 300,
-                    "price": 300,
-                },
-            ],
-            "mux": Lock(),
-        },
+        [
+            {
+                "id": 1,
+                "from": "JFK",
+                "to": "DTW",
+                "available_places": 300,
+                "total_places": 300,
+                "price": 300,
+            },
+        ],
     )
