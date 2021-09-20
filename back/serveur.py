@@ -32,7 +32,7 @@ def create_ticket():
         "first_name": body["first_name"],
         "nationality": body["nationality"],
         "flight_id": int(body["flight_id"]),
-        "price": get_flight(int(body["flight_id"]))["price"],
+        "price": get_flight(int(body["flight_id"]), flights)["price"],
     }
 
     tickets.append(ticket)

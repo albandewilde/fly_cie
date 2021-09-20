@@ -50,7 +50,7 @@ flights = [
 ]
 
 
-def get_flight(flight_id):
+def get_flight(flight_id, flights):
     for flight in flights:
         if flight["id"] == flight_id:
             return flight
