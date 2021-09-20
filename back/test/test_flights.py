@@ -5,7 +5,7 @@ from flights import flights, get_flight, has_available_place
 
 
 def test_get_flight_from_id():
-    flgt = get_flight(6, flights)
+    flgt = get_flight(6, flights["list"])
 
     assert flgt["id"] == 6
     assert flgt["from"] == "JFK"
@@ -16,7 +16,7 @@ def test_get_flight_from_id():
 
 
 def test_get_non_existing_flight_return_none():
-    flgt = get_flight(-12, flights)
+    flgt = get_flight(-12, flights["list"])
 
     assert flgt == None
 
