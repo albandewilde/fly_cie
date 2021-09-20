@@ -18,11 +18,11 @@
     </div>
 
     <div>
-        <form nz-form (ngSubmit)="submitForm()">
+        <form nz-form [formGroup]="form" (ngSubmit)="submitForm()">
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="from">Départ</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <nz-select class="select">
+                    <nz-select formControlName="from" class="select">
                         <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport"></nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -30,7 +30,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="book.to">Destination</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <nz-select class="select">
+                    <nz-select formControlName="to" class="select">
                         <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport"></nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -38,24 +38,23 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6">Nom</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <input nz-input placeholder="Nom de famille">
+                    <input formControlName="lastName" nz-input placeholder="Nom de famille">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="this.book.first_name">Prénom</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <input nz-input placeholder="Prénom">
+                    <input formControlName="firstName" nz-input placeholder="Prénom">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Nationalité</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <input nz-input placeholder="Nationalité">
+                    <label nz-checkbox formControlName="loungeSupplement">Supplément Lounge</label>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
                 <nz-form-control>
-                    <button nz-button nzType="primary">Réserver</button>
+                    <button nz-button nzType="primary" (click)="submitForm()">Réserver</button>
                 </nz-form-control>
             </nz-form-item>
         </form>

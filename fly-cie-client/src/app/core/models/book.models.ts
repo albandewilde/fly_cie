@@ -1,4 +1,4 @@
-export interface Book {
+export interface Ticket {
     last_name: string,
     first_name: string,
     nationality: string,

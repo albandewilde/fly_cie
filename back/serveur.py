@@ -19,6 +19,10 @@ def root():
     bottle.response.set_header("Access-Control-Allow-Origin", "*")
     return "Fly cie this is Pam, how may I help you ?"
 
+@srv.route("/book", method=['OPTIONS'])
+def toto():
+    bottle.response.set_header("Access-Control-Allow-Origin", "*")
+    return bottle.HTTPResponse(status=200)
 
 @srv.post("/book")
 def book_ticket():
@@ -42,6 +46,5 @@ def book_ticket():
 def get_flights():
     bottle.response.set_header("Access-Control-Allow-Origin", "*")
     return {"flights": flights["list"]}
-
 
 srv.run(host="0.0.0.0", port="7860", debug=True)

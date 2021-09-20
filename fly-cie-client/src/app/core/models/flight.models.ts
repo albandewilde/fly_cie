@@ -12,9 +12,3 @@ export interface Flight {
 export interface ApiFlight {
     flights: Array<Flight>
 }
-
-export interface Ticket {
-    flight: Flight,
-    user: User,
-    date: Date
-}

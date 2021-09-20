@@ -9,8 +9,10 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { HttpClientModule } from '@angular/common/http';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
-@NgModule({
+@NgModule( {
   declarations: [
     FlightListPageComponent
   ],
@@ -19,12 +21,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     FlightRoutingModule,
     UiModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
-    NzFormModule,
-    NzSelectModule,
+    NzCheckboxModule,
     NzDatePickerModule,
+    NzFormModule,
+    NzInputModule,
+    NzSelectModule,
     NzTableModule,
-    NzInputModule
   ]
-})
+} )
 export class FlightModule { }
