@@ -90,7 +90,7 @@ namespace FlyCie.App.Services
             };
         }
 
-        private async Task<Currency> GetCurrency( string currencyName )
+        public async Task<Currency> GetCurrency( string currencyName )
         {
             try
             {

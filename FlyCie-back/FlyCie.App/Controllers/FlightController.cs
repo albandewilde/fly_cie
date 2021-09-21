@@ -70,11 +70,19 @@ namespace FlyCie.App.Controllers
             }
         }
 
-        [HttpGet("Currencies")]
+        [HttpGet( "Currencies" )]
         public async Task<IActionResult> GetCurrencies()
         {
             _logger.LogInformation( $"Trying to fetch all currencies" );
             return Ok( await _ticketService.GetCurrencies() );
+        }
+
+        [HttpGet( "GetRate" )]
+        public async Task<IActionResult> GetRate( [FromQuery] string currency )
+        {
+            _logger.LogInformation( $"Trying to fetch currency {currency}" );
+            var res = await _ticketService.GetCurrency( currency );
+            return Ok( res.Rate );
         }
     }
 }
