@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -37,14 +38,23 @@ namespace FlyCie.App.Services
             var trips = FlightsData.GetRoundTrips( ticketForm.FlightIds.ToList() );
 
             var result = new List<Ticket>();
-            foreach( var roundTrip in trips[ "RoundTrips" ] )
+            foreach( var ( roundTrip, index ) in trips[ "RoundTrips" ].Select( (t, index) => (t, index) ) )
             {
-                var ticket = await CreateTicket( roundTrip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, ticketForm.LoungeSupplement, true );
+                var supplement = false;
+                if( ticketForm.LoungeSupplement )
+                {
+                    if( index % 2 == 0 )
+                    {
+                        supplement = true;
+                    }
+                }
+
+                var ticket = await CreateTicket( roundTrip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, supplement, true );
                 result.Add( ticket );
                 FlightsData.FlightList.Where( f => f.FlightId == roundTrip.FlightId ).First().AvailablePlaces -= 1;
             }
 
-            foreach( var trip in trips["OneWayTrips"] )
+            foreach( var (trip, index) in trips["OneWayTrips"].Select( ( t, index ) => (t, index) ) )
             {
                 var ticket = await CreateTicket( trip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, ticketForm.LoungeSupplement, false );
                 result.Add( ticket );
@@ -85,8 +95,11 @@ namespace FlyCie.App.Services
             try
             {
                 _logger.LogInformation( $"Trying to fetch currency ${currencyName} rate" );
-                var response = await _httpClient.GetAsync( _currencyRequestUrl );
-                var responseString = response.Content.ReadAsStringAsync();
+                var requestUrl = $"{_currencyRequestUrl}{currencyName}";
+                _logger.LogInformation( $"Requesting : {requestUrl}" );
+
+                var response = await _httpClient.GetAsync( requestUrl );
+                var responseString = await response.Content.ReadAsStringAsync();
 
                 return new Currency
                 {
@@ -95,6 +108,26 @@ namespace FlyCie.App.Services
                 };
             }
             catch( Exception e )
+            {
+                _logger.LogError( "Enable to fetch currency's rate", e );
+                throw new Exception( "Enable to fetch currency's rate" );
+            }
+        }
+
+        public async Task<string> GetCurrencies()
+        {
+            try
+            {
+                _logger.LogInformation( $"Trying to fetch currencies" );
+                var requestUrl = $"{_currencyRequestUrl}currencies";
+                _logger.LogInformation( $"Requesting : {requestUrl}" );
+
+                var response = await _httpClient.GetAsync( requestUrl );
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                return responseString;
+            }
+            catch ( Exception e )
             {
                 _logger.LogError( "Enable to fetch currency's rate", e );
                 throw new Exception( "Enable to fetch currency's rate" );

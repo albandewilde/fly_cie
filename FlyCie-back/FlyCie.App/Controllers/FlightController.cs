@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FlyCie.App.Controllers
@@ -16,7 +17,9 @@ namespace FlyCie.App.Controllers
         private readonly ILogger<FlightController> _logger;
         private readonly ITicketService _ticketService;
 
-        public FlightController( ILogger<FlightController> logger, ITicketService ticketService )
+        public FlightController( 
+            ILogger<FlightController> logger, 
+            ITicketService ticketService )
         {
             _logger = logger;
             _ticketService = ticketService;
@@ -65,6 +68,13 @@ namespace FlyCie.App.Controllers
             {
                 return BadRequest( e );
             }
+        }
+
+        [HttpGet("Currencies")]
+        public async Task<IActionResult> GetCurrencies()
+        {
+            _logger.LogInformation( $"Trying to fetch all currencies" );
+            return Ok( await _ticketService.GetCurrencies() );
         }
     }
 }
