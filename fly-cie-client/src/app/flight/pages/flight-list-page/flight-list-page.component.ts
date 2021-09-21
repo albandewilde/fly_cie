@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { CurrenciesApiService } from 'src/app/core/api/currency-api.service';
 import { FlightApiService } from 'src/app/core/api/flight-api.service';
 import { Ticket } from 'src/app/core/models/book.models';
+import { Currencies } from 'src/app/core/models/currencies.models';
 import { ApiFlight, Flight } from 'src/app/core/models/flight.models';
 
 @Component( {
@@ -16,18 +18,22 @@ export class FlightListPageComponent implements OnInit {
   public airports: Array<string>;
   public ticket: Ticket;
   public form: FormGroup;
+  public currenciesList: Array<string>;
 
   constructor (
     private _flightApiService: FlightApiService,
+    private _currenciesApiService: CurrenciesApiService,
     private _formBuilder: FormBuilder
   ) {
     this.airports = new Array<string>();
     this.flightsList = new Array<Flight>();
+    this.currenciesList = new Array<string>();
     this.initializeForm();
   }
 
   initializeForm(): void {
     this.form = this._formBuilder.group( {
+      currency: ['USD', Validators.required],
       from: ['CDG', Validators.required],
       to: ['JFK', Validators.required],
       lastName: ['toto', Validators.required],
@@ -39,7 +45,14 @@ export class FlightListPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFlights();
-    console.log(this.form)
+    this.getCurrencies();
+  }
+
+  getCurrencies(): void {
+    this._currenciesApiService.getCurrencies().pipe( first() ).subscribe( (res: Array<string>) => {
+      this.currenciesList = res;
+    } );
+    console.log(this.currenciesList);
   }
 
   getFlights(): void {
