@@ -38,6 +38,12 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
+                <nz-form-label [nzSpan]="6">Total</nz-form-label>
+                <nz-form-control [nzSpan]="4">
+                    <div>{{ getTotal() }}</div>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
                 <!-- <nz-form-label [nzSpan]="6"></nz-form-label> -->
                 <nz-form-control [nzSpan]="14" [nzOffset]="6">
                     <button nz-button nzType="primary" (click)="submitForm()">Réserver</button>

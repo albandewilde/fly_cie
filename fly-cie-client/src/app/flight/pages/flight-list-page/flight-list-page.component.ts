@@ -72,4 +72,12 @@ export class FlightListPageComponent implements OnInit {
       debugger;
     } );
   }
+
+  getTotal(){
+    let flightPrice = this.flightsList.find( f => f.from == this.form.get( 'from' )?.value && f.to == this.form.get( 'to' )?.value )?.price;
+    if (this.form.get('loungeSupplement')?.value && this.form.get('from')?.value !== 'DTW'){
+      return flightPrice! + 150 + ' €'
+    }
+    return flightPrice + ' €';
+  }
 }
