@@ -6,7 +6,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="from">Devise</nz-form-label>
                 <nz-form-control [nzSpan]="4">
-                    <nz-select formControlName="currency" class="select">
+                    <nz-select formControlName="currency" class="select" [ngModel]="form" (ngModelChange)="getRate()">
                         <nz-option *ngFor="let currency of currenciesList" [nzValue]="currency" [nzLabel]="currency"></nz-option>
                     </nz-select>
                 </nz-form-control>
