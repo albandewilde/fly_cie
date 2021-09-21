@@ -43,6 +43,7 @@ def book_ticket():
         body["nationality"],
         body["flight_ids"],
         body["lounge_supplement"],
+        body["currency"],
         tickets,
         flights,
     )

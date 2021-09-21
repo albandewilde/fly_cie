@@ -1,0 +1,5 @@
+bottle==0.12.19
+pytest==6.2.5
+pytest-cov==2.12.1
+requests==2.22.0
+xmltodict==0.12.0
