@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { CurrenciesApiService } from 'src/app/core/api/currency-api.service';
 import { FlightApiService } from 'src/app/core/api/flight-api.service';
+import { Airport } from 'src/app/core/models/airport.model';
 import { Ticket } from 'src/app/core/models/book.models';
-import { Currencies } from 'src/app/core/models/currencies.models';
-import { ApiFlight, Flight } from 'src/app/core/models/flight.models';
+import { Flight } from 'src/app/core/models/flight.models';
 
 @Component( {
   templateUrl: './flight-list-page.component.html',
@@ -14,6 +14,7 @@ import { ApiFlight, Flight } from 'src/app/core/models/flight.models';
 } )
 export class FlightListPageComponent implements OnInit {
 
+  private _airportEnum = Airport;
   public flightsList: Array<Flight>;
   public airports: Array<string>;
   public ticket: Ticket;
@@ -49,27 +50,30 @@ export class FlightListPageComponent implements OnInit {
   }
 
   getCurrencies(): void {
-    this._currenciesApiService.getCurrencies().pipe( first() ).subscribe( (res: Array<string>) => {
-      this.currenciesList = res;
+    this._currenciesApiService.getCurrencies().pipe( first() ).subscribe( ( res: Array<string> ) => {
+      this.currenciesList = [...res];
     } );
-    console.log(this.currenciesList);
   }
 
   getFlights(): void {
-    this._flightApiService.getFlights().pipe( first() ).subscribe( ( res: ApiFlight ) => {
-      this.flightsList = res.flights;
-      this.airports = res.flights.map( f => f.to );
+    this._flightApiService.getFlights().pipe( first() ).subscribe( ( res: Array<Flight> ) => {
+      this.flightsList = [...res];
+      this.airports = res.map( f => {
+        return this._airportEnum[f.from];
+      } );
       this.airports = this.airports.filter( ( value, index ) => this.airports.indexOf( value ) === index );
     } );
   }
 
   submitForm() {
     let ids: Array<number> = [];
-    const flightId = this.flightsList.find( f => f.from == this.form.get( 'from' )?.value && f.to == this.form.get( 'to' )?.value )!.id;
+    const flightId = this.flightsList.find( f =>
+      this._airportEnum[f.from] == this.form.get( 'from' )?.value && this._airportEnum[f.to] == this.form.get( 'to' )?.value
+    )!.flightId;
     ids.push( flightId );
 
-    if (this.form.get('from')?.value == 'DTW') {
-      this.form.patchValue( {'loungeSupplement': false });
+    if ( this.form.get( 'from' )?.value == 'DTW' ) {
+      this.form.patchValue( { 'loungeSupplement': false } );
     }
 
     const newTicket: Ticket = {
@@ -80,15 +84,18 @@ export class FlightListPageComponent implements OnInit {
       nationality: this.form.get( 'nationality' )?.value
     };
 
-    console.log(newTicket);
+    console.log( newTicket );
     this._flightApiService.bookTicket( newTicket ).subscribe( res => {
       debugger;
     } );
   }
 
-  getTotal(){
-    let flightPrice = this.flightsList.find( f => f.from == this.form.get( 'from' )?.value && f.to == this.form.get( 'to' )?.value )?.price;
-    if (this.form.get('loungeSupplement')?.value && this.form.get('from')?.value !== 'DTW'){
+  getTotal() {
+    let flightPrice = this.flightsList.find( f =>
+      this._airportEnum[f.from] == this.form.get( 'from' )?.value
+      && this._airportEnum[f.to] == this.form.get( 'to' )?.value
+    )?.price;
+    if ( this.form.get( 'loungeSupplement' )?.value && this.form.get( 'from' )?.value !== 'DTW' ) {
       return flightPrice! + 150 + ' €'
     }
     return flightPrice + ' €';
