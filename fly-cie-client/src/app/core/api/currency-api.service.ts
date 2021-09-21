@@ -12,7 +12,7 @@ import { Currencies } from "../models/currencies.models";
     constructor (
       private httpClient: HttpClient,
     ) {
-      this.baseUrl = `http://localhost:7861`;
+      this.baseUrl = `http://localhost:5000/api/flight`;
     }
   
     public getCurrencies(): Observable<Array<string>> {

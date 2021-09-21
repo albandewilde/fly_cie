@@ -14,11 +14,11 @@ export class FlightApiService {
   constructor (
     private httpClient: HttpClient,
   ) {
-    this.baseUrl = `http://localhost:7860`;
+    this.baseUrl = `http://localhost:5000/api`;
   }
 
   public getFlights(): Observable<ApiFlight> {
-    return this.httpClient.get<ApiFlight>( `${this.baseUrl}/flights` );
+    return this.httpClient.get<ApiFlight>( `${this.baseUrl}/flight` );
   }
 
   public bookTicket( book: Ticket ) {
