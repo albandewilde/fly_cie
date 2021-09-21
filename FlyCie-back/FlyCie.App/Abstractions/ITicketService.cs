@@ -8,5 +8,6 @@ namespace FlyCie.App.Abstractions
     {
         Task<List<Ticket>> BookTickets( TicketForm ticketForm );
         Task<string> GetCurrencies();
+        Task<Currency> GetCurrency( string currencyName );
     }
 }
