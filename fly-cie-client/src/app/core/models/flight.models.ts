@@ -1,14 +1,10 @@
-import { User } from "./user.models";
+import { Airport } from "./airport.model";
 
 export interface Flight {
-    id: number,
-    from: string,
-    to: string,
-    available_places: number,
-    total_places: number,
-    price: number
-}
-
-export interface ApiFlight {
-    flights: Array<Flight>
+    flightId: number;
+    from: Airport;
+    to: Airport;
+    availablePlaces: number;
+    totalPlaces: number;
+    price: number;
 }
