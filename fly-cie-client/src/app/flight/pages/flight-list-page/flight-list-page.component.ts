@@ -39,6 +39,7 @@ export class FlightListPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFlights();
+    console.log(this.form)
   }
 
   getFlights(): void {
@@ -54,6 +55,10 @@ export class FlightListPageComponent implements OnInit {
     const flightId = this.flightsList.find( f => f.from == this.form.get( 'from' )?.value && f.to == this.form.get( 'to' )?.value )!.id;
     ids.push( flightId );
 
+    if (this.form.get('from')?.value == 'DTW') {
+      this.form.patchValue( {'loungeSupplement': false });
+    }
+
     const newTicket: Ticket = {
       first_name: this.form.get( 'firstName' )?.value,
       last_name: this.form.get( 'lastName' )?.value,
@@ -62,6 +67,7 @@ export class FlightListPageComponent implements OnInit {
       nationality: this.form.get( 'nationality' )?.value
     };
 
+    console.log(newTicket);
     this._flightApiService.bookTicket( newTicket ).subscribe( res => {
       debugger;
     } );

@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { FlightApiService } from 'src/app/core/api/flight-api.service';
+import { ApiFlight, Flight } from 'src/app/core/models/flight.models';
 
 @Component({
   templateUrl: './home-page.component.html',
@@ -8,19 +11,33 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
 
-  public router: Router
+  public router: Router;
+  public flightsList: Array<Flight>;
+  public airports: Array<string>;
+
 
   constructor(
+    private _flightApiService: FlightApiService,
     router: Router
   ) { 
     this.router = router 
   }
 
   ngOnInit(): void {
+    this.getFlights();
+
   }
 
   toResa() {
     this.router.navigate(['/flight']);
+  }
+
+  getFlights(): void {
+    this._flightApiService.getFlights().pipe( first() ).subscribe( ( res: ApiFlight ) => {
+      this.flightsList = res.flights;
+      this.airports = res.flights.map( f => f.to );
+      this.airports = this.airports.filter( ( value, index ) => this.airports.indexOf( value ) === index );
+    } );
   }
 
 }

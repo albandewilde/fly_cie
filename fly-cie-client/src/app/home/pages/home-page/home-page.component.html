@@ -1,4 +1,21 @@
 <app-navbar></app-navbar>
-<div>
-    <button nz-button nzType="primary" nzShape="round" (click)="toResa()">Faire une réservation</button>
+<div class="content">
+    <div>
+        <h1>Liste des vols</h1>
+        <nz-table [nzData]="flightsList">
+            <thead>
+                <th>Aéroport de départ</th>
+                <th>Aéroport d'arrivé</th>
+                <th>Prix</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let flight of flightsList">
+                    <td>{{flight.from}}</td>
+                    <td>{{flight.to}}</td>
+                    <td>{{flight.price}} €</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+    <button nz-button nzType="primary" nzShape="round" (click)="toResa()">Faire ma réservation</button>
 </div>

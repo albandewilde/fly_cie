@@ -6,6 +6,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { UiModule } from '../ui/ui.module';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { RouterModule } from '@angular/router';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 
 @NgModule( {
@@ -18,6 +19,7 @@ import { RouterModule } from '@angular/router';
     NzButtonModule,
     RouterModule,
     HomeRoutingModule,
+    NzTableModule,
   ]
 } )
 export class HomeModule { }
