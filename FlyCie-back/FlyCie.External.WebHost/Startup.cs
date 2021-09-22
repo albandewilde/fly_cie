@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using FlyCie.External.WebHost.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using FlyCie.App.Services;
-using FlyCie.App.Abstractions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace FlyCie.App
+namespace FlyCie.External.WebHost
 {
     public class Startup
     {
@@ -21,9 +20,11 @@ namespace FlyCie.App
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddControllers();
-            services.AddHostedService<FlightService>();
-            services.AddSingleton<ITicketService, TicketService>();
             services.AddSingleton<ExternalService>();
+            services.Configure<ExternalServiceOptions>( o =>
+            {
+                o.ApiUrl = Configuration[ "ExternalApiUrl" ];
+            } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,22 +35,14 @@ namespace FlyCie.App
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors( c =>
-                    c.SetIsOriginAllowed( host => true )
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials() );
-
-            app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseEndpoints( endpoints =>
-            {
-                endpoints.MapControllers();
-            } );
+             {
+                 endpoints.MapControllers();
+             } );
         }
     }
 }

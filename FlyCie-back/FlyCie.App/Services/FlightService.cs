@@ -24,7 +24,7 @@ namespace FlyCie.App.Services
             var flights = new List<Flight>();
             flights.Add( new Flight
             {
-                FlightId = 1,
+                FlightId = "DT3712",
                 From = Airport.DTW,
                 To = Airport.CDG,
                 TotalPlaces = 700,
@@ -33,7 +33,7 @@ namespace FlyCie.App.Services
             } );
             flights.Add( new Flight
             {
-                FlightId = 2,
+                FlightId = "DT3333",
                 From = Airport.DTW,
                 To = Airport.JFK,
                 TotalPlaces = 300,
@@ -42,7 +42,7 @@ namespace FlyCie.App.Services
             } );
             flights.Add( new Flight
             {
-                FlightId = 3,
+                FlightId = "AF2458",
                 From = Airport.CDG,
                 To = Airport.JFK,
                 TotalPlaces = 1000,
@@ -51,7 +51,7 @@ namespace FlyCie.App.Services
             } );
             flights.Add( new Flight
             {
-                FlightId = 4,
+                FlightId = "AF9545",
                 From = Airport.CDG,
                 To = Airport.DTW,
                 TotalPlaces = 700,
@@ -60,7 +60,7 @@ namespace FlyCie.App.Services
             } );
             flights.Add( new Flight
             {
-                FlightId = 5,
+                FlightId = "JF1296",
                 From = Airport.JFK,
                 To = Airport.CDG,
                 TotalPlaces = 1000,
@@ -69,7 +69,7 @@ namespace FlyCie.App.Services
             } );
             flights.Add( new Flight
             {
-                FlightId = 6,
+                FlightId = "JF1784",
                 From = Airport.JFK,
                 To = Airport.DTW,
                 TotalPlaces = 300,

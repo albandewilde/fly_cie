@@ -20,17 +20,17 @@ namespace FlyCie.App.Services
             _flights = flights;
         }
 
-        public static Flight GetFlight( int flightId )
+        public static Flight GetFlight( string flightId )
         {
-            return FlightList.FirstOrDefault( f => f.FlightId == flightId );
+            return FlightList.FirstOrDefault( f => string.Equals( f.FlightId, flightId ) );
         }
 
-        public static bool HasAvailablePlace( int flightId )
+        public static bool HasAvailablePlace( string flightId )
         {
             return GetFlight( flightId ).AvailablePlaces > 0;
         }
 
-        public static Dictionary<string, List<Flight>> GetRoundTrips( List<int> flightIds )
+        public static Dictionary<string, List<Flight>> GetRoundTrips( List<string> flightIds )
         {
             var result = new Dictionary<string, List<Flight>>();
             result[ "RoundTrips" ] = new List<Flight>();

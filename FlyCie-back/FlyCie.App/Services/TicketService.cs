@@ -3,6 +3,7 @@ using FlyCie.Model;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -104,13 +105,13 @@ namespace FlyCie.App.Services
                 return new Currency
                 {
                     Name = currencyName,
-                    Rate = Convert.ToDouble( responseString )
+                    Rate = Convert.ToDouble( responseString, CultureInfo.InvariantCulture )
                 };
             }
             catch( Exception e )
             {
-                _logger.LogError( "Enable to fetch currency's rate", e );
-                throw new Exception( "Enable to fetch currency's rate" );
+                _logger.LogError( "Unable to fetch currency's rate", e );
+                throw new Exception( "Unable to fetch currency's rate" );
             }
         }
 
@@ -130,7 +131,7 @@ namespace FlyCie.App.Services
             catch ( Exception e )
             {
                 _logger.LogError( "Enable to fetch currency's rate", e );
-                throw new Exception( "Enable to fetch currency's rate" );
+                return null;
             }
         }
     }
