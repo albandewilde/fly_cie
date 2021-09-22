@@ -2,6 +2,15 @@
 
 School project for architecture course
 
+You can start the project with the command `docker-compose up`.  
+It will start:
+
+- The Front on port `7862`
+- The Back on port `7860`
+- The Currency on port `7861`
+- The External on port `7863`
+
+
 # Backend endpoints
 
 The server run on ther port `7860` on all interfaces
@@ -68,7 +77,7 @@ api/flight/bookTicket
             "name": "string",
             "rate": 0
         }
-    },
+    }
 ]
 ```
 
@@ -94,3 +103,7 @@ GET:
 ```json
 ["USD", "HKD"]
 ```
+
+# External service
+
+The external service run on the port `7863` on all interfaces.
