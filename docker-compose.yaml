@@ -2,7 +2,9 @@ version: "3.7"
 
 services:
     server:
-        build: "./FlyCie-back/"
+        build:
+            context: "./FlyCie-back/"
+            dockerfile: "./images/server.Dockerfile"
         ports: [7860:80]
 
     currency:
@@ -12,3 +14,9 @@ services:
     front:
         build: "./fly-cie-client/"
         ports: [7862:7862]
+
+    external:
+        build:
+            context: "./FlyCie-back/"
+            dockerfile: "./images/external.Dockerfile"
+        ports: [7863:80]

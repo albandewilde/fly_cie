@@ -8,7 +8,7 @@ namespace FlyCie.Model
         public string LastName { get; set; }
         public string Nationality { get; set; }
         public bool LoungeSupplement { get; set; }
-        public IEnumerable<int> FlightIds { get; set; }
+        public IEnumerable<string> FlightIds { get; set; }
         public string Currency { get; set; }
     }
 }

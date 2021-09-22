@@ -105,13 +105,13 @@ namespace FlyCie.App.Services
                 return new Currency
                 {
                     Name = currencyName,
-                    Rate = Convert.ToDouble( responseString, CultureInfo.InvariantCulture)
+                    Rate = Convert.ToDouble( responseString, CultureInfo.InvariantCulture )
                 };
             }
             catch( Exception e )
             {
-                _logger.LogError( "Enable to fetch currency's rate", e );
-                throw new Exception( "Enable to fetch currency's rate" );
+                _logger.LogError( "Unable to fetch currency's rate", e );
+                throw new Exception( "Unable to fetch currency's rate" );
             }
         }
 
@@ -131,7 +131,7 @@ namespace FlyCie.App.Services
             catch ( Exception e )
             {
                 _logger.LogError( "Enable to fetch currency's rate", e );
-                throw new Exception( "Enable to fetch currency's rate" );
+                return null;
             }
         }
     }
