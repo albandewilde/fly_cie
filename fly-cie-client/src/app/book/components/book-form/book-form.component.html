@@ -1,0 +1,32 @@
+<nz-card style="border-radius: 10px; width: 500px;" [nzTitle]="title" class="card-style">
+    <form nz-form [formGroup]="ticketForm">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10">Départ</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <nz-select formControlName="from" class="select">
+                    <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport" [nzDisabled]="ticketForm.value.to == airport"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10">Destination</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <nz-select formControlName="to" class="select">
+                    <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport" [nzDisabled]="ticketForm.value.from == airport"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10">Aller/Retour</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <nz-switch formControlName="oneWay" [(ngModel)]="ticketForm.value.oneWay"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10">Supplément Lounge</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <label nz-checkbox formControlName="loungeSupplement" [nzDisabled]="ticketForm.value.from == 'DTW'"></label>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-card>

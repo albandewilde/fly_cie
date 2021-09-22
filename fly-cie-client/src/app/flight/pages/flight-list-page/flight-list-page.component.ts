@@ -19,9 +19,10 @@ export class FlightListPageComponent implements OnInit {
   public flightsList: Array<Flight>;
   public airports: Array<string>;
   public ticket: Ticket;
-  public form: FormGroup;
+  public bookForm: FormGroup;
   public currenciesList: Array<string>;
   public rate: number;
+  public forms: Array<FormGroup>;
 
   constructor(
     private _flightApiService: FlightApiService,
@@ -31,30 +32,32 @@ export class FlightListPageComponent implements OnInit {
     this.airports = new Array<string>();
     this.flightsList = new Array<Flight>();
     this.currenciesList = new Array<string>();
-  }
-
-  initializeForm(): void {
-    this.form = this._formBuilder.group({
-      currency: ['USD', Validators.required],
-      from: ['CDG', Validators.required],
-      to: ['JFK', Validators.required],
-      lastName: ['toto', Validators.required],
-      firstName: ['tata', Validators.required],
-      nationality: ['french', Validators.required],
-      loungeSupplement: [false, Validators.required]
-    });
-  }
-
-  ngOnInit(): void {
-    this.getCurrencies();
-    this.getFlights();
+    this.forms = new Array<FormGroup>();
     this.initializeForm();
   }
 
-  getCurrencies(): void {
-    this._currenciesApiService.getCurrencies().pipe(first()).subscribe((res: Array<string>) => {
-      this.currenciesList = [...res];
+  initializeForm(): void {
+    this.bookForm = this._formBuilder.group({
+      currency: ['USD', Validators.required],
+      lastName: [null, Validators.required],
+      firstName: [null, Validators.required],
+      nationality: [null, Validators.required]
     });
+  }
+
+  initializeTicketForm(): void {
+    this.forms.push(this._formBuilder.group({
+      from: ['CDG', Validators.required],
+      to: ['JFK', Validators.required],
+      oneWay: [false, Validators.required],
+      loungeSupplement: [false, Validators.required]
+    }));
+  }
+
+  ngOnInit(): void {
+    this.getFlights();
+    this.getCurrencies();
+    this.initializeTicketForm();
   }
 
   getFlights(): void {
@@ -67,9 +70,14 @@ export class FlightListPageComponent implements OnInit {
     });
   }
 
+  getCurrencies(): void {
+    this._currenciesApiService.getCurrencies().pipe(first()).subscribe((res: Array<string>) => {
+      this.currenciesList = [...res];
+    });
+  }
 
   getRate(): number {
-    this._currenciesApiService.getCurrencyRate(this.form.get('currency')?.value).pipe(first()).subscribe((res: number) => {
+    this._currenciesApiService.getCurrencyRate(this.bookForm.get('currency')?.value).pipe(first()).subscribe((res: number) => {
       this.rate = res
     });
     return this.rate;
@@ -77,36 +85,54 @@ export class FlightListPageComponent implements OnInit {
 
   submitForm() {
     let ids: Array<number> = [];
-    const flightId = this.flightsList.find(f =>
-      this._airportEnum[f.from] == this.form.get('from')?.value && this._airportEnum[f.to] == this.form.get('to')?.value
-    )!.flightId;
-    ids.push(flightId);
+    this.forms.forEach(ticket => {
+      const flightId = this.flightsList.find(f =>
+        this._airportEnum[f.from] == this.bookForm.get('from')?.value && this._airportEnum[f.to] == this.bookForm.get('to')?.value
+      )!.flightId;
+      ids.push(flightId);
+      if (ticket.get('oneWay')?.value) {
+        const flightId = this.flightsList.find(f =>
+          this._airportEnum[f.from] == this.bookForm.get('to')?.value && this._airportEnum[f.to] == this.bookForm.get('from')?.value
+        )!.flightId;
+      }
+    })
 
-    if (this.form.get('from')?.value == 'DTW') {
-      this.form.patchValue({ 'loungeSupplement': false });
+    if (this.bookForm.get('from')?.value == 'DTW') {
+      this.bookForm.patchValue({ 'loungeSupplement': false });
     }
 
     const newTicket: Ticket = {
-      first_name: this.form.get('firstName')?.value,
-      last_name: this.form.get('lastName')?.value,
+      first_name: this.bookForm.get('firstName')?.value,
+      last_name: this.bookForm.get('lastName')?.value,
       flight_ids: ids,
-      lounge_supplement: this.form.get('loungeSupplement')?.value,
-      nationality: this.form.get('nationality')?.value
+      lounge_supplement: this.bookForm.get('loungeSupplement')?.value,
+      nationality: this.bookForm.get('nationality')?.value
     };
 
     this._flightApiService.bookTicket(newTicket).subscribe();
   }
 
   getTotal() {
-    let flightPrice = this.flightsList.find(f =>
-      this._airportEnum[f.from] == this.form.get('from')?.value
-      && this._airportEnum[f.to] == this.form.get('to')?.value
-    )?.price;
-    if (this.rate) {
-      if (this.form.get('loungeSupplement')?.value && this.form.get('from')?.value !== 'DTW') {
-        return ((flightPrice! + 150) * this.rate).toFixed(2) + ' ' + getCurrencySymbol(this.form.get('currency')?.value, "wide");
+    let flightPrice = 0;
+    let numberOfLounge = 0;
+    this.forms.forEach( ticket => {
+      const ticketPrice = this.flightsList.find(f =>
+        this._airportEnum[f.from] == ticket.get('from')?.value
+        && this._airportEnum[f.to] == ticket.get('to')?.value
+      )?.price as number;
+
+      if (ticket.get('oneWay')?.value) {
+        flightPrice += ticketPrice*2
+      } else {
+        flightPrice += ticketPrice
       }
-      return (flightPrice! * this.rate).toFixed(2) + ' ' + getCurrencySymbol(this.form.get('currency')?.value, "wide");
+      if (ticket.get('loungeSupplement')?.value) {
+        numberOfLounge++;
+      }
+    })
+
+    if (this.rate) {
+      return ((flightPrice! + 150 * numberOfLounge) * this.rate).toFixed(2) + ' ' + getCurrencySymbol(this.bookForm.get('currency')?.value, "wide");
     } else {
       return flightPrice + ' €'
     }

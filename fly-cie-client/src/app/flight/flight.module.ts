@@ -11,6 +11,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { HttpClientModule } from '@angular/common/http';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { BookModule } from '../book/book.module';
 
 @NgModule( {
   declarations: [
@@ -29,6 +30,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzFormModule,
     NzInputModule,
     NzSelectModule,
+    BookModule
   ]
 } )
 export class FlightModule { }
