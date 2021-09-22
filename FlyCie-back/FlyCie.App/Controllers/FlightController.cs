@@ -47,7 +47,7 @@ namespace FlyCie.App.Controllers
                     || string.IsNullOrWhiteSpace( ticketForm.FirstName )
                     || string.IsNullOrWhiteSpace( ticketForm.LastName )
                     || string.IsNullOrWhiteSpace( ticketForm.Nationality )
-                    || ticketForm.FlightIds.ToList().Count <= 0 )
+                    || ticketForm.FlightCodes.ToList().Count <= 0 )
                 {
                     _logger.LogError( "Form contains parameters that don't match requirements" );
                     return BadRequest( "Form contains parameters thatmatch requirements" );
@@ -57,7 +57,7 @@ namespace FlyCie.App.Controllers
                     $"Trying to book tickets for user: {ticketForm.LastName} {ticketForm.FirstName}" 
                 );
 
-                var result = await _ticketService.BookTickets( ticketForm );
+                var result = await _ticketService.HandleBook( ticketForm );
 
                 _logger.LogInformation( "Creating tickets was succefully executed" );
                 return Ok( result );

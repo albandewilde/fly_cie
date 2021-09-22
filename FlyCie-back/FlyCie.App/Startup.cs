@@ -22,8 +22,13 @@ namespace FlyCie.App
         {
             services.AddControllers();
             services.AddHostedService<FlightService>();
-            services.AddSingleton<ITicketService, TicketService>();
+            services.AddHostedService<ExternalTicketHandler>();
             services.AddSingleton<ExternalService>();
+            services.AddSingleton<ITicketService, TicketService>();
+            services.Configure<ExternalApiOptions>( o =>
+            {
+                o.ExternalApiUrl = Configuration[ "ExternalApiUrl" ];
+            } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

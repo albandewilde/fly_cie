@@ -20,7 +20,7 @@ namespace FlyCie.External.WebHost
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddControllers();
-            services.AddSingleton<ExternalService>();
+            services.AddSingleton<FlightTicketService>();
             services.Configure<ExternalServiceOptions>( o =>
             {
                 o.ApiUrl = Configuration[ "ExternalApiUrl" ];

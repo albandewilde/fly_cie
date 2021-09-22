@@ -1,38 +1,73 @@
-﻿using FlyCie.Model;
+﻿using FlyCie.App.Helpers;
+using FlyCie.Model;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace FlyCie.App.Services
 {
     public class ExternalService
     {
-        public ExternalService()
-        {
+        private readonly ILogger<ExternalService> _logger;
+        private readonly ExternalApiOptions _options;
+        private readonly HttpClient _httpClient;
 
+        public ExternalService( 
+            ILogger<FlightService> logger,
+            IOptionsMonitor<ExternalApiOptions> options )
+        {
+            _options = options.CurrentValue;
+            _httpClient = new HttpClient();
         }
 
-        public Dictionary<string, IEnumerable<Flight>> GroupFlights(
-            IEnumerable<Flight> internalFlights,
-            IEnumerable<Flight> externalFlights )
+        public async Task<IEnumerable<Flight>> GetExternalFlights()
         {
-            var result = new Dictionary<string, IEnumerable<Flight>>();
-            var flightsToRemove = internalFlights.ToList().Where( f => ShouldRemove( f, externalFlights ) );
-            internalFlights.ToList().RemoveAll( f => flightsToRemove.Contains( f ) );
-
-            result[ "InternalFlights" ] = internalFlights;
-            result[ "ExternalFlights" ] = externalFlights;
-
-            return result;
-        }
-
-        private bool ShouldRemove( Flight internalFlight, IEnumerable<Flight> externalFlights )
-        {
-            if ( externalFlights.Contains( internalFlight ) )
+            try
             {
-                return true;
+                var response = await _httpClient.GetAsync( $"{_options.ExternalApiUrl}/api/external/GetFlights" );
+                var responseString = await response.Content.ReadAsStringAsync();
+                var externalFlights = JsonSerializer.Deserialize<List<Model.External.Flight>>( responseString );
+
+                return from ef in externalFlights select ExternalModelHelper.MapFlight( ef );
             }
-            return false;
+            catch ( Exception e )
+            {
+                _logger.LogError( "WTF Something happened when fetching external flights !", e );
+                return null;
+            }
+        }
+
+        public async Task<Model.External.Ticket> SendBookTicket( Model.External.Ticket ticket )
+        {
+            try
+            {
+                _logger.LogInformation( $"Trying to send request to book ticket" );
+                var content = JsonSerializer.Serialize( ticket );
+                var response = await _httpClient.PostAsync(
+                    $"{_options.ExternalApiUrl}/api/external/BookTicket",
+                    new StringContent( content, Encoding.UTF8, "application/json" )
+                );
+                var responseString = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation( "Successfully booked a ticket." );
+
+                return JsonSerializer.Deserialize<Model.External.Ticket>( responseString );
+            }
+            catch ( Exception e )
+            {
+                _logger.LogError( "An error occurred while booking a ticket", e );
+                return null;
+            }
         }
     }
+    public sealed class ExternalApiOptions
+    {
+        public string ExternalApiUrl { get; set; }
+    }
 }
+

@@ -1,10 +1,12 @@
 ﻿{
-    "FlyCie.External.WebHost": {
-        "commandName": "Project",
-        "launchBrowser": true,
-        "applicationUrl": "http://localhost:5555",
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
+    "profiles": {
+        "FlyCie.External.WebHost": {
+            "commandName": "Project",
+            "launchBrowser": false,
+            "applicationUrl": "http://localhost:5555",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
         }
-    }
+    },
 }

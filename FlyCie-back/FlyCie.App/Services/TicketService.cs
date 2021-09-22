@@ -1,4 +1,5 @@
 ﻿using FlyCie.App.Abstractions;
+using FlyCie.App.Helpers;
 using FlyCie.Model;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,27 +17,28 @@ namespace FlyCie.App.Services
         private readonly ILogger<TicketService> _logger;
         private readonly HttpClient _httpClient;
         private readonly string _currencyRequestUrl;
+        private readonly ExternalTicketHandler _externalTicketHandler;
 
-        public TicketService( ILogger<TicketService> logger )
+        public TicketService( ILogger<TicketService> logger, ExternalTicketHandler externalTicketHandler )
         {
             _logger = logger;
             _httpClient = new HttpClient();
             _currencyRequestUrl = "http://localhost:7861/";
+            _externalTicketHandler = externalTicketHandler;
         }
 
-        public async Task<List<Ticket>> BookTickets( TicketForm ticketForm )
+        private async Task<List<Ticket>> BookTickets( TicketForm ticketForm )
         {
-            foreach( var id in ticketForm.FlightIds )
+            foreach( var id in ticketForm.FlightCodes )
             {
                 if( !FlightsData.HasAvailablePlace( id ) )
                 {
-                    _logger.LogError( $"Flight #{id} has no available places" );
-                 
-                    throw new Exception( $"Flight #{id} has no available places" );
+                    _logger.LogError( $"Flight #{id} has no available places" );                 
+                    return null;
                 }
             }
 
-            var trips = FlightsData.GetRoundTrips( ticketForm.FlightIds.ToList() );
+            var trips = FlightsData.GetRoundTrips( ticketForm.FlightCodes.ToList() );
 
             var result = new List<Ticket>();
             foreach( var ( roundTrip, index ) in trips[ "RoundTrips" ].Select( (t, index) => (t, index) ) )
@@ -52,14 +54,14 @@ namespace FlyCie.App.Services
 
                 var ticket = await CreateTicket( roundTrip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, supplement, true );
                 result.Add( ticket );
-                FlightsData.FlightList.Where( f => f.FlightId == roundTrip.FlightId ).First().AvailablePlaces -= 1;
+                FlightsData.FlightList.Where( f => f.FlightCode == roundTrip.FlightCode ).First().AvailablePlaces -= 1;
             }
 
             foreach( var (trip, index) in trips["OneWayTrips"].Select( ( t, index ) => (t, index) ) )
             {
                 var ticket = await CreateTicket( trip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, ticketForm.LoungeSupplement, false );
                 result.Add( ticket );
-                FlightsData.FlightList.Where( f => f.FlightId == trip.FlightId ).First().AvailablePlaces -= 1;
+                FlightsData.FlightList.Where( f => f.FlightCode == trip.FlightCode ).First().AvailablePlaces -= 1;
             }
 
             return result;
@@ -133,6 +135,51 @@ namespace FlyCie.App.Services
                 _logger.LogError( "Enable to fetch currency's rate", e );
                 return null;
             }
+        }
+
+        public async Task<List<Ticket>> HandleBook( TicketForm ticketForm )
+        {
+            List<Ticket> tickets = new List<Ticket>();
+            TicketForm ourFlightsIds = new TicketForm
+            {
+                FirstName = ticketForm.FirstName,
+                LastName = ticketForm.LastName,
+                Nationality = ticketForm.Nationality,
+                LoungeSupplement = ticketForm.LoungeSupplement,
+                FlightCodes = new List<string>(),
+                Currency = ticketForm.Currency,
+            };
+           
+            foreach (string code in ticketForm.FlightCodes)
+            {
+                if ( FlightsData.IsOurTrip( code ) )
+                {
+                    ourFlightsIds.FlightCodes.Append( code );
+                }
+                else
+                {
+                    var flight = FlightsData.GetFlight( code, false );
+                    Ticket ticket = new Ticket
+                    {
+                        Flight = flight,
+                        Date = DateTime.UtcNow,
+                        Price = flight.Price,
+                        FirstName = ticketForm.FirstName,
+                        LastName = ticketForm.LastName,
+                        Nationality = ticketForm.Nationality,
+                        LoungeSupplement = ticketForm.LoungeSupplement,
+                        Currency = await GetCurrency( ticketForm.Currency ),
+                    };
+
+                    var extTicket = ExternalModelHelper.MapTicket( ticket );
+
+                    await _externalTicketHandler.EnqueueTicket( extTicket );
+                }
+            }
+
+            tickets.AddRange( await BookTickets( ourFlightsIds ) );
+            
+            return tickets;
         }
     }
 }

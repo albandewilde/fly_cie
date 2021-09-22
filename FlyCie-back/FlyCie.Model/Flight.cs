@@ -2,7 +2,7 @@
 {
     public class Flight
     {
-        public string FlightId { get; set; }
+        public string FlightCode { get; set; }
         public Airport From { get; set; }
         public Airport To { get; set; }
         public int AvailablePlaces { get; set; }

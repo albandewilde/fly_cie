@@ -6,8 +6,8 @@ namespace FlyCie.App.Abstractions
 {
     public interface ITicketService
     {
-        Task<List<Ticket>> BookTickets( TicketForm ticketForm );
         Task<string> GetCurrencies();
         Task<Currency> GetCurrency( string currencyName );
+        Task<List<Ticket>> HandleBook( TicketForm ticketForm );
     }
 }
