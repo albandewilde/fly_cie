@@ -2,58 +2,47 @@
 <div class="content">
     <div>
         <h1>Faire ma réservation</h1>
-        <form nz-form [formGroup]="form" (ngSubmit)="submitForm()">
+        <div class="card-list">
+            <app-book-form *ngFor="let form of forms; let i = index" [ticketForm]="form" [ticketNumber]="i" [airports]="airports"></app-book-form>
+        </div>
+
+        <button nz-button nzType="primary" (click)="initializeTicketForm()">Ajouter un billet</button>
+
+        <form nz-form [formGroup]="bookForm" style="width: 100%;">
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="from">Devise</nz-form-label>
-                <nz-form-control [nzSpan]="4">
-                    <nz-select formControlName="currency" class="select">
+                <nz-form-label [nzSpan]="10">Devise</nz-form-label>
+                <nz-form-control [nzSpan]="3">
+                    <nz-select formControlName="currency" class="select" [ngModel]="bookForm.value.currency" (ngModelChange)="getRate()">
                         <nz-option *ngFor="let currency of currenciesList" [nzValue]="currency" [nzLabel]="currency"></nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="from">Départ</nz-form-label>
-                <nz-form-control [nzSpan]="4">
-                    <nz-select formControlName="from" class="select">
-                        <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="book.to">Destination</nz-form-label>
-                <nz-form-control [nzSpan]="4">
-                    <nz-select formControlName="to" class="select">
-                        <nz-option *ngFor="let airport of airports" [nzValue]="airport" [nzLabel]="airport"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-label [nzSpan]="6">Nom</nz-form-label>
-                <nz-form-control [nzSpan]="4">
+                <nz-form-label [nzSpan]="10">Nom</nz-form-label>
+                <nz-form-control [nzSpan]="5">
                     <input formControlName="lastName" nz-input placeholder="Nom de famille">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="this.book.first_name">Prénom</nz-form-label>
-                <nz-form-control [nzSpan]="4">
+                <nz-form-label [nzSpan]="10">Prénom</nz-form-label>
+                <nz-form-control [nzSpan]="5">
                     <input formControlName="firstName" nz-input placeholder="Prénom">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Supplément Lounge</nz-form-label>
-                <nz-form-control [nzSpan]="4">
-                    <label nz-checkbox formControlName="loungeSupplement" [nzDisabled]="form.value.from == 'DTW'"></label>
+                <nz-form-label [nzSpan]="10">Nationalité</nz-form-label>
+                <nz-form-control [nzSpan]="5">
+                    <input formControlName="nationality" nz-input placeholder="Nationalité">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6">Total</nz-form-label>
+                <nz-form-label [nzSpan]="10">Total</nz-form-label>
                 <nz-form-control [nzSpan]="4">
                     <div>{{ getTotal() }}</div>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <!-- <nz-form-label [nzSpan]="6"></nz-form-label> -->
-                <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                <nz-form-control [nzSpan]="14" [nzOffset]="10">
                     <button nz-button nzType="primary" (click)="submitForm()">Réserver</button>
                 </nz-form-control>
             </nz-form-item>

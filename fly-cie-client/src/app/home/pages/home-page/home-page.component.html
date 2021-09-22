@@ -10,9 +10,9 @@
             </thead>
             <tbody>
                 <tr *ngFor="let flight of flightsList">
-                    <td>{{flight.from}}</td>
-                    <td>{{flight.to}}</td>
-                    <td>{{flight.price}} €</td>
+                    <td>{{ _airportEnum[flight.from] }}</td>
+                    <td>{{ _airportEnum[flight.to] }}</td>
+                    <td>{{ flight.price }} €</td>
                 </tr>
             </tbody>
         </nz-table>

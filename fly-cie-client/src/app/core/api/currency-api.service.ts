@@ -17,4 +17,8 @@ export class CurrenciesApiService {
   public getCurrencies(): Observable<Array<string>> {
     return this.httpClient.get<Array<string>>( `${this.baseUrl}/currencies` );
   }
+
+  public getCurrencyRate(currency: string): Observable<number> {
+    return this.httpClient.get<number>(`${this.baseUrl}/getRate?currency=${currency}`);
+  }
 }

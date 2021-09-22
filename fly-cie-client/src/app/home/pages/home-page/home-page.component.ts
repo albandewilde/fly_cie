@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { FlightApiService } from 'src/app/core/api/flight-api.service';
+import { Airport } from 'src/app/core/models/airport.model';
 import { Flight } from 'src/app/core/models/flight.models';
 
 @Component( {
@@ -14,6 +15,7 @@ export class HomePageComponent implements OnInit {
   public router: Router;
   public flightsList: Array<Flight>;
   public airports: Array<string>;
+  public _airportEnum = Airport;
 
 
   constructor (
@@ -25,7 +27,6 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFlights();
-
   }
 
   toResa() {
@@ -35,8 +36,10 @@ export class HomePageComponent implements OnInit {
   getFlights(): void {
     this._flightApiService.getFlights().pipe( first() ).subscribe( ( res: Array<Flight> ) => {
       this.flightsList = [...res];
-      // this.airports = res.map( f => f.to );
-      // this.airports = this.airports.filter( ( value, index ) => this.airports.indexOf( value ) === index );
+      this.airports = res.map( f => {
+        return this._airportEnum[f.from];
+      } );
+      this.airports = this.airports.filter( ( value, index ) => this.airports.indexOf( value ) === index );
     } );
   }
 
