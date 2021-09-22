@@ -63,6 +63,7 @@ def get_currencies():
     ]["Cube"]
 
     currencies = [c["@currency"] for c in all_currencies]
+    bottle.response.set_header("Access-Control-Allow-Origin", "*")
     return json.dumps(currencies)
 
 

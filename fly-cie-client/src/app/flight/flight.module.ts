@@ -7,10 +7,11 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { HttpClientModule } from '@angular/common/http';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { BookModule } from '../book/book.module';
 
 @NgModule( {
   declarations: [
@@ -23,12 +24,13 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NzButtonModule,
     NzCheckboxModule,
     NzDatePickerModule,
     NzFormModule,
     NzInputModule,
     NzSelectModule,
-    NzTableModule,
+    BookModule
   ]
 } )
 export class FlightModule { }

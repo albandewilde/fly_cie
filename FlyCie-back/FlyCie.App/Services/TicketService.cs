@@ -3,6 +3,7 @@ using FlyCie.Model;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -90,7 +91,7 @@ namespace FlyCie.App.Services
             };
         }
 
-        private async Task<Currency> GetCurrency( string currencyName )
+        public async Task<Currency> GetCurrency( string currencyName )
         {
             try
             {
@@ -104,7 +105,7 @@ namespace FlyCie.App.Services
                 return new Currency
                 {
                     Name = currencyName,
-                    Rate = Convert.ToDouble( responseString )
+                    Rate = Convert.ToDouble( responseString, CultureInfo.InvariantCulture)
                 };
             }
             catch( Exception e )

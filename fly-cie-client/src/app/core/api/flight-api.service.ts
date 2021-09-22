@@ -1,9 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { Ticket } from '../models/book.models';
-import { ApiFlight, Flight } from '../models/flight.models';
+import { Flight } from '../models/flight.models';
 
 @Injectable( {
   providedIn: 'root'
@@ -14,11 +13,11 @@ export class FlightApiService {
   constructor (
     private httpClient: HttpClient,
   ) {
-    this.baseUrl = `http://localhost:7860`;
+    this.baseUrl = `http://localhost:5000/api`;
   }
 
-  public getFlights(): Observable<ApiFlight> {
-    return this.httpClient.get<ApiFlight>( `${this.baseUrl}/flights` );
+  public getFlights(): Observable<Array<Flight>> {
+    return this.httpClient.get<Array<Flight>>( `${this.baseUrl}/flight/getFlights` );
   }
 
   public bookTicket( book: Ticket ) {

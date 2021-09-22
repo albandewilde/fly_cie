@@ -16,6 +16,7 @@
 @import '../node_modules/ng-zorro-antd/form/style/entry.less';
 @import '../node_modules/ng-zorro-antd/date-picker/style/entry.less';
 @import '../node_modules/ng-zorro-antd/input/style/entry.less';
+@import '../node_modules/ng-zorro-antd/checkbox/style/entry.less';
 
 
 @import 'styles/_color.less';
@@ -97,7 +98,7 @@
 @breadcrumb-link-color-hover: @accent-color;
 
 // SWITCH
-@switch-color: @auxiliary-color;
+@switch-color: @accent-color;
 nz-switch.text-only .@{switch-prefix-cls} {
     padding: 0 1em;
 
@@ -119,3 +120,15 @@ nz-switch.text-only .@{switch-prefix-cls} {
 // TIMELINE
 @timeline-color: @accent-color;
 @timeline-dot-bg: @background-color;
+
+// FORM
+@label-color: @light-text-color;
+
+// TABLE
+@table-row-hover-bg: @accent-color;
+table, tr:hover {
+    color: @white;
+}
+
+// DROPDOWN
+@item-active-bg: @accent-color;

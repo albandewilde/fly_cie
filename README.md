@@ -7,49 +7,73 @@ School project for architecture course
 The server run on ther port `7860` on all interfaces
 
 GET :  
-/flights   
+api/flight/getFlights
 => returns an Array of Flight
+
+enum Airport {
+    DTW,
+    CDG,
+    JFK
+}
+
 ```json
 {
-    "id": 1,
-    "from": "DTW",
-    "to": "CDG",
-    "available_places": 700,
-    "total_places": 700,
-    "price": 700
+    "FlightId": 1,
+    "From": 1,
+    "To": 2,
+    "AvailablePlaces": 700,
+    "TotalPlaces": 700,
+    "Price": 700
 }
 ```
 
 POST :  
-/book   
+api/flight/bookTicket
 => body contains
 ```json
 {
-    "last_name": "string",
-    "first_name": "string",
-    "nationality": "string",
-    "flight_ids": [1, 2, 3],
-    "lounge_supplement": true,
-    "currency": "string"
+    "LastName": "string",
+    "FirstName": "string",
+    "Nationality": "string",
+    "FlightIds": [1, 2, 3],
+    "LoungeSupplement": true,
+    "Currency": "string"
 }
 ```
-=> returns the created ticket
+=> returns the created tickets
 ```json
-{
-    "last_name": "string",
-    "first_name": "string",
-    "nationality": "string",
-    "flight_id": 15,
-    "price": 300,
-    "creation_date": "string",
-    "lounge_supplement": true,
-    "rate": 1,
-    "currency": "string"
-}
+[
+    {
+        "LastName": "string",
+        "FirstName": "string",
+        "Nationality": "string",
+        "Flight": "Flight",
+        "Price": 300,
+        "Date": "string",
+        "LoungeSupplement": true,
+        "Currency": {
+            "name": "string",
+            "rate": 0
+        }
+    },
+    {
+        "LastName": "string",
+        "FirstName": "string",
+        "Nationality": "string",
+        "Flight": "Flight",
+        "Price": 300,
+        "Date": "string",
+        "LoungeSupplement": true,
+        "Currency": {
+            "name": "string",
+            "rate": 0
+        }
+    },
+]
 ```
 
 GET:  
-/currencies  
+api/flight/currencies  
 => List of available currencies (without rate)
 ```json
 ["USD", "HKD"]
