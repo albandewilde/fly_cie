@@ -87,13 +87,14 @@ export class FlightListPageComponent implements OnInit {
     let ids: Array<number> = [];
     this.forms.forEach(ticket => {
       const flightId = this.flightsList.find(f =>
-        this._airportEnum[f.from] == this.bookForm.get('from')?.value && this._airportEnum[f.to] == this.bookForm.get('to')?.value
+        this._airportEnum[f.from] == ticket.get('from')?.value && this._airportEnum[f.to] == ticket.get('to')?.value
       )!.flightId;
       ids.push(flightId);
       if (ticket.get('oneWay')?.value) {
         const flightId = this.flightsList.find(f =>
-          this._airportEnum[f.from] == this.bookForm.get('to')?.value && this._airportEnum[f.to] == this.bookForm.get('from')?.value
+          this._airportEnum[f.from] == ticket.get('to')?.value && this._airportEnum[f.to] == ticket.get('from')?.value
         )!.flightId;
+        ids.push(flightId);
       }
     })
 
@@ -102,13 +103,15 @@ export class FlightListPageComponent implements OnInit {
     }
 
     const newTicket: Ticket = {
-      first_name: this.bookForm.get('firstName')?.value,
-      last_name: this.bookForm.get('lastName')?.value,
-      flight_ids: ids,
-      lounge_supplement: this.bookForm.get('loungeSupplement')?.value,
-      nationality: this.bookForm.get('nationality')?.value
+      firstName: this.bookForm.get('firstName')?.value,
+      lastName: this.bookForm.get('lastName')?.value,
+      flightIds: ids,
+      loungeSupplement: true,
+      nationality: this.bookForm.get('nationality')?.value,
+      currency: this.bookForm.get("currency")?.value
     };
 
+    console.log(newTicket);
     this._flightApiService.bookTicket(newTicket).subscribe();
   }
 

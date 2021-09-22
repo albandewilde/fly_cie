@@ -1,7 +1,8 @@
 export interface Ticket {
-    last_name: string,
-    first_name: string,
+    lastName: string,
+    firstName: string,
     nationality: string,
-    flight_ids: Array<number>,
-    lounge_supplement: boolean
+    flightIds: Array<number>,
+    loungeSupplement: boolean,
+    currency: string
 }

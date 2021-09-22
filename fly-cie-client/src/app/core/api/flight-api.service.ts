@@ -21,6 +21,6 @@ export class FlightApiService {
   }
 
   public bookTicket( book: Ticket ) {
-    return this.httpClient.post( `${this.baseUrl}/book`, book );
+    return this.httpClient.post( `${this.baseUrl}/flight/bookTicket`, book );
   }
 }
