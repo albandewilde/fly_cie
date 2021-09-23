@@ -9,7 +9,7 @@ It will start:
 - The Back on port `7860`
 - The Currency on port `7861`
 - The External on port `7863`
-
+- The Out on port `7864`
 
 # Backend endpoints
 
@@ -107,3 +107,36 @@ GET:
 # External service
 
 The external service run on the port `7863` on all interfaces.
+
+# The out
+
+it's user as a end point for others to sell out tickets.  
+It listen on poirt `7864` on all interfaces.
+
+GET:  
+/alive/
+=> check if the server is alive
+`Working using Go 17`
+
+GET:  
+/flights/
+=> return an array of flights
+
+```json
+[
+    {
+        "code": 1,
+        "from": "DTW",
+        "to": "JFK",
+        "available_places": 459,
+        "price": 300
+    },
+    {
+        "code": 2,
+        "from": "CDG",
+        "to": "DTW",
+        "available_places": 231,
+        "price": 500
+    }
+]
+```
