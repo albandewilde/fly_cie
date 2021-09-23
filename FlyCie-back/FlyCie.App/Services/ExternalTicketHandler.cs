@@ -38,17 +38,20 @@ namespace FlyCie.App.Services
                         ticket.payed_price += commissionAmount;
 
                         var createdTicket = await _externalService.SendBookTicket( ticket );
-                        _ticketList.Add( createdTicket );
-                        _orders.Add( new Order
+                        if( !(createdTicket is null) )
                         {
-                            BoughtTicket = ticket,
-                            CommissionAmount = commissionAmount
-                        } );
+                            _ticketList.Add( createdTicket );
+                            _orders.Add( new Order
+                            {
+                                BoughtTicket = ticket,
+                                CommissionAmount = commissionAmount
+                            } );
+                        }
                     }
                 }
                 catch ( Exception e )
                 {
-                    throw e;
+                    return;
                 }
 
                 await Task.Delay( 5000 );

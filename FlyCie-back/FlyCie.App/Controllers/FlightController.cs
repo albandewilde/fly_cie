@@ -56,7 +56,7 @@ namespace FlyCie.App.Controllers
                     || ticketForm.FlightCodes.ToList().Count <= 0 )
                 {
                     _logger.LogError( "Form contains parameters that don't match requirements" );
-                    return BadRequest( "Form contains parameters thatmatch requirements" );
+                    return StatusCode( 422, "Form contains parameters that don't match requirements" );
                 }
 
                 _logger.LogInformation( 

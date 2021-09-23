@@ -22,11 +22,23 @@
                 <nz-switch formControlName="oneWay" [(ngModel)]="ticketForm.value.oneWay"></nz-switch>
             </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSpan]="10">Supplément Lounge</nz-form-label>
-            <nz-form-control [nzSpan]="6">
-                <label nz-checkbox formControlName="loungeSupplement" [nzDisabled]="ticketForm.value.from == 'DTW'"></label>
-            </nz-form-control>
-        </nz-form-item>
+        <div *ngIf="!flightOptions; else displayOptions">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="10">Supplément Lounge</nz-form-label>
+                <nz-form-control [nzSpan]="6">
+                    <label nz-checkbox formControlName="loungeSupplement" [nzDisabled]="ticketForm.value.from == 'DTW'"></label>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <ng-template #displayOptions>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="10">Options du vol</nz-form-label>
+                <nz-form-control [nzSpan]="10">
+                    <nz-select nzMode="multiple" nzAllowClear nzPlaceholder="Choisissez vos options">
+                        <nz-option *ngFor="let options of flightOptions" [nzValue]="options.option_type" [nzLabel]="options.option_type"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </ng-template>
     </form>
 </nz-card>

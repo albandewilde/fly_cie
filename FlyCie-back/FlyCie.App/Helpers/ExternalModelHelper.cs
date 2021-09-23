@@ -29,7 +29,8 @@ namespace FlyCie.App.Helpers
                 To = flight.arrival,
                 Price = flight.base_price,
                 TotalPlaces = flight.plane.total_seats,
-                Options = flight.options
+                Options = flight.options,
+                AdditionalFields = null
             };
         }
 
@@ -43,7 +44,8 @@ namespace FlyCie.App.Helpers
                 To = flight.To,
                 Price = flight.Price,
                 TotalPlaces = flight.TotalPlaces,
-                Options = null
+                Options = null,
+                AdditionalFields = null
             };
         }
         

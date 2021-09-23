@@ -1,3 +1,4 @@
+import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -14,6 +15,7 @@ export class HomePageComponent implements OnInit {
 
   public router: Router;
   public flightsList: Array<Flight>;
+  public externalFlight: Array<Flight>;
   public airports: Array<string>;
   public _airportEnum = Airport;
 
@@ -23,6 +25,8 @@ export class HomePageComponent implements OnInit {
     router: Router
   ) {
     this.router = router
+    this.flightsList = new Array<Flight>();
+    this.externalFlight = new Array<Flight>();
   }
 
   ngOnInit(): void {
@@ -35,12 +39,18 @@ export class HomePageComponent implements OnInit {
 
   getFlights(): void {
     this._flightApiService.getFlights().pipe( first() ).subscribe( ( res: Array<Flight> ) => {
-      this.flightsList = [...res];
+      res.forEach( flight => {
+        if (flight.options !== null ) {
+          this.externalFlight.push(flight)
+        }
+        else {
+          this.flightsList.push(flight);
+        }
+      })
       this.airports = res.map( f => {
-        return this._airportEnum[f.from];
+        return f.from;
       } );
       this.airports = this.airports.filter( ( value, index ) => this.airports.indexOf( value ) === index );
     } );
   }
-
 }

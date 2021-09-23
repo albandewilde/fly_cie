@@ -4,14 +4,33 @@
         <h1>Liste des vols</h1>
         <nz-table [nzData]="flightsList">
             <thead>
+                <th>Numéro de vol</th>
                 <th>Aéroport de départ</th>
                 <th>Aéroport d'arrivé</th>
                 <th>Prix</th>
             </thead>
             <tbody>
                 <tr *ngFor="let flight of flightsList">
-                    <td>{{ _airportEnum[flight.from] }}</td>
-                    <td>{{ _airportEnum[flight.to] }}</td>
+                    <td>{{ flight.flightCode }}</td>
+                    <td>{{ flight.from }}</td>
+                    <td>{{ flight.to }}</td>
+                    <td>{{ flight.price }} €</td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <h1>Liste des vols externes</h1>
+        <nz-table [nzData]="flightsList">
+            <thead>
+                <th>Numéro de vol</th>
+                <th>Aéroport de départ</th>
+                <th>Aéroport d'arrivé</th>
+                <th>Prix</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let flight of externalFlight">
+                    <td>{{ flight.flightCode }}</td>
+                    <td>{{ flight.from }}</td>
+                    <td>{{ flight.to }}</td>
                     <td>{{ flight.price }} €</td>
                 </tr>
             </tbody>

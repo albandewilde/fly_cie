@@ -3,7 +3,7 @@ import { FormGroup } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { FlightApiService } from "src/app/core/api/flight-api.service";
 import { Airport } from "src/app/core/models/airport.model";
-import { Flight } from "src/app/core/models/flight.models";
+import { Flight, FlightOptions } from "src/app/core/models/flight.models";
 
 @Component({
     selector: 'app-book-form',
@@ -13,14 +13,16 @@ import { Flight } from "src/app/core/models/flight.models";
 })
 export class BookFormComponent implements OnInit {
 
-  @Input() ticketForm: FormGroup;
-  @Input() ticketNumber: number;
-  @Input() airports: Array<string>;
-  public title: string;
+    @Input() ticketForm: FormGroup;
+    @Input() ticketNumber: number;
+    @Input() airports: Array<string>;
+    @Input() flightsList: Array<Flight>;
+    @Input() flightOptions: Array<FlightOptions>;
+    public title: string;
 
     constructor() { }
 
     ngOnInit(): void {
-        this.title = "Billet " + (this.ticketNumber + 1) ;
+        this.title = "Billet " + (this.ticketNumber + 1);
     }
 }
