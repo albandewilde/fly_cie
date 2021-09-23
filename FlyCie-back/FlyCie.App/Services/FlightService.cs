@@ -28,8 +28,8 @@ namespace FlyCie.App.Services
             flights.Add( new Flight
             {
                 FlightCode = "DT3712",
-                From = Airport.DTW,
-                To = Airport.CDG,
+                From = Airport.DTW.ToString(),
+                To = Airport.CDG.ToString(),
                 TotalPlaces = 700,
                 AvailablePlaces = 700,
                 Price = 700
@@ -37,8 +37,8 @@ namespace FlyCie.App.Services
             flights.Add( new Flight
             {
                 FlightCode = "DT3333",
-                From = Airport.DTW,
-                To = Airport.JFK,
+                From = Airport.DTW.ToString(),
+                To = Airport.JFK.ToString(),
                 TotalPlaces = 300,
                 AvailablePlaces = 300,
                 Price = 300
@@ -46,8 +46,8 @@ namespace FlyCie.App.Services
             flights.Add( new Flight
             {
                 FlightCode = "AF2458",
-                From = Airport.CDG,
-                To = Airport.JFK,
+                From = Airport.CDG.ToString(),
+                To = Airport.JFK.ToString(),
                 TotalPlaces = 1000,
                 AvailablePlaces = 1000,
                 Price = 1000
@@ -55,8 +55,8 @@ namespace FlyCie.App.Services
             flights.Add( new Flight
             {
                 FlightCode = "AF9545",
-                From = Airport.CDG,
-                To = Airport.DTW,
+                From = Airport.CDG.ToString(),
+                To = Airport.DTW.ToString(),
                 TotalPlaces = 700,
                 AvailablePlaces = 700,
                 Price = 700
@@ -64,8 +64,8 @@ namespace FlyCie.App.Services
             flights.Add( new Flight
             {
                 FlightCode = "JF1296",
-                From = Airport.JFK,
-                To = Airport.CDG,
+                From = Airport.JFK.ToString(),
+                To = Airport.CDG.ToString(),
                 TotalPlaces = 1000,
                 AvailablePlaces = 1000,
                 Price = 1000
@@ -73,8 +73,8 @@ namespace FlyCie.App.Services
             flights.Add( new Flight
             {
                 FlightCode = "JF1784",
-                From = Airport.JFK,
-                To = Airport.DTW,
+                From = Airport.JFK.ToString(),
+                To = Airport.DTW.ToString(),
                 TotalPlaces = 300,
                 AvailablePlaces = 300,
                 Price = 300

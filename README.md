@@ -29,8 +29,8 @@ enum Airport {
 ```json
 {
     "FlightId": 1,
-    "From": 1,
-    "To": 2,
+    "From": "DTW",
+    "To": "CDG",
     "AvailablePlaces": 700,
     "TotalPlaces": 700,
     "Price": 700,
@@ -40,6 +40,20 @@ enum Airport {
             "price": 100
         }
     ]
+}
+```
+
+api/flight/GetOurFlights
+=> return an array of Flight
+
+```json
+{
+    "FlightId": 1,
+    "From": "DTW",
+    "To": "CDG",
+    "AvailablePlaces": 700,
+    "TotalPlaces": 700,
+    "Price": 700
 }
 ```
 
