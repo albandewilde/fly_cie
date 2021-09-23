@@ -17,7 +17,7 @@ export class FlightApiService {
   }
 
   public getFlights(): Observable<Array<Flight>> {
-    return this.httpClient.get<Array<Flight>>( `${this.baseUrl}/flight/getFlights` );
+    return this.httpClient.get<Array<Flight>>( `${this.baseUrl}/flight/GetFlights` );
   }
 
   public bookTicket( book: Ticket ) {

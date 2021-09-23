@@ -47,7 +47,7 @@ namespace FlyCie.App.Controllers
                     || string.IsNullOrWhiteSpace( ticketForm.FirstName )
                     || string.IsNullOrWhiteSpace( ticketForm.LastName )
                     || string.IsNullOrWhiteSpace( ticketForm.Nationality )
-                    || ticketForm.FlightCodes.ToList().Count <= 0 )
+                    || ticketForm.FlightIds.ToList().Count <= 0 )
                 {
                     _logger.LogError( "Form contains parameters that don't match requirements" );
                     return BadRequest( "Form contains parameters thatmatch requirements" );

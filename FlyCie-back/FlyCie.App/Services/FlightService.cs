@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlyCie.App.Services
 {
-    public class FlightService : IHostedService
+    public class FlightService : BackgroundService
     {
         private readonly ILogger<FlightService> _logger;
         private readonly ExternalService _externalService;
@@ -19,18 +19,6 @@ namespace FlyCie.App.Services
         {
             _logger = logger;
             _externalService = externalService;
-        }
-
-        public async Task StartAsync( CancellationToken cancellationToken )
-        {
-            while( true )
-            {
-                _logger.LogInformation( "Initializing possible flights." );
-                await InitializeData();
-                _logger.LogInformation( "Flights initialized." );
-
-                await Task.Delay( 1000 * 60 * 60 * 6 );
-            }
         }
         
         public async Task InitializeData()
@@ -104,9 +92,15 @@ namespace FlyCie.App.Services
             FlightsData.SetFlights( allFlights );
         }
 
-        public async Task StopAsync( CancellationToken cancellationToken )
+        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
         {
-            _logger.LogWarning( "Stoping flight service." );
+            while ( true )
+            {
+                _logger.LogInformation( "Initializing possible flights." );
+                await InitializeData();
+                _logger.LogInformation( "Flights initialized." );
+                await Task.Delay( 1000 * 60 * 60 * 6 );
+            }
         }
     }
 }

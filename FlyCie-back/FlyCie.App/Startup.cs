@@ -21,8 +21,9 @@ namespace FlyCie.App
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddControllers();
-            services.AddHostedService<FlightService>();
+            services.AddSingleton<QueueService>();
             services.AddHostedService<ExternalTicketHandler>();
+            services.AddHostedService<FlightService>();
             services.AddSingleton<ExternalService>();
             services.AddSingleton<ITicketService, TicketService>();
             services.Configure<ExternalApiOptions>( o =>
@@ -45,13 +46,11 @@ namespace FlyCie.App
                     .AllowAnyHeader()
                     .AllowCredentials() );
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints( endpoints =>
             {
                 endpoints.MapControllers();

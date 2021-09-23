@@ -1,64 +1,58 @@
 ﻿using FlyCie.Model;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FlyCie.App.Services
 {
-    public class ExternalTicketHandler : IHostedService
+    public class ExternalTicketHandler : BackgroundService
     {
-        private ConcurrentQueue<Model.External.Ticket> _queue;
+        private readonly QueueService _queueService;
         private List<Model.External.Ticket> _ticketList;
-        private readonly ExternalService _externalService;
-        private readonly ILogger<ExternalTicketHandler> _logger;
         private readonly List<Order> _orders;
+        private readonly ExternalService _externalService;
 
-        public ExternalTicketHandler( 
-            ExternalService externalService,
-            ILogger<ExternalTicketHandler> logger )
+        public ExternalTicketHandler( ExternalService externalService,
+            QueueService queueService )
         {
-            _queue = new ConcurrentQueue<Model.External.Ticket>();
             _externalService = externalService;
+            _queueService = queueService;
             _ticketList = new List<Model.External.Ticket>();
-            _logger = logger;
             _orders = new List<Order>();
         }
 
-        public async Task StartAsync( CancellationToken cancellationToken )
+        protected override async Task ExecuteAsync( CancellationToken stoppingToken )
         {
-            _logger.LogInformation( "Starting External ticket handler" );
-
             while( true )
             {
-                Model.External.Ticket ticket;
-                _queue.TryDequeue( out ticket );
-
-                var commissionAmount = Convert.ToInt32( ticket.payed_price * 0.1 );
-                ticket.payed_price += commissionAmount;
-
-                var createdTicket = await _externalService.SendBookTicket( ticket );
-                _ticketList.Add( createdTicket );
-                _orders.Add( new Order
+                try
                 {
-                    BoughtTicket = ticket,
-                    CommissionAmount = commissionAmount
-                } );
+                    Model.External.Ticket ticket;
+                    _queueService.Queue.TryDequeue( out ticket );
+
+                    if ( !( ticket is null ) )
+                    {
+                        var commissionAmount = Convert.ToInt32( ticket.payed_price * 0.1 );
+                        ticket.payed_price += commissionAmount;
+
+                        var createdTicket = await _externalService.SendBookTicket( ticket );
+                        _ticketList.Add( createdTicket );
+                        _orders.Add( new Order
+                        {
+                            BoughtTicket = ticket,
+                            CommissionAmount = commissionAmount
+                        } );
+                    }
+                }
+                catch ( Exception e )
+                {
+                    throw e;
+                }
+
+                await Task.Delay( 5000 );
             }
-        }
-
-        public async Task StopAsync( CancellationToken cancellationToken )
-        {
-            _logger.LogWarning( "Stoping external ticket handler" );
-        }
-
-        public async Task EnqueueTicket( Model.External.Ticket ticket )
-        {
-            _logger.LogInformation( $"Enqueue ticket to send to external: {ticket}" );
-            _queue.Enqueue( ticket );
         }
     }
 }

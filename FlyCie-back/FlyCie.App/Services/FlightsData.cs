@@ -1,7 +1,6 @@
 ﻿using FlyCie.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlyCie.App.Services
 {
@@ -14,7 +13,10 @@ namespace FlyCie.App.Services
 
         public static IEnumerable<Flight> GetAvailableFlights()
         {
-            return FlightList.Where( f => f.AvailablePlaces > 0 );
+            var result = new List<Flight>();
+            result.AddRange( FlightList.Where( f => f.AvailablePlaces > 0 ) );
+            result.AddRange( ExternalFlights.Where( f => f.AvailablePlaces > 0 ) );
+            return result;
         }
 
         public static void SetFlights( Dictionary<string, List<Flight>> flights )

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,19 +16,21 @@ namespace FlyCie.App.Services
         private readonly ILogger<TicketService> _logger;
         private readonly HttpClient _httpClient;
         private readonly string _currencyRequestUrl;
-        private readonly ExternalTicketHandler _externalTicketHandler;
+        private readonly List<Ticket> _tickets;
+        private readonly QueueService _queueService;
 
-        public TicketService( ILogger<TicketService> logger, ExternalTicketHandler externalTicketHandler )
+        public TicketService( ILogger<TicketService> logger, QueueService queueService )
         {
             _logger = logger;
             _httpClient = new HttpClient();
             _currencyRequestUrl = "http://localhost:7861/";
-            _externalTicketHandler = externalTicketHandler;
+            _tickets = new List<Ticket>();
+            _queueService = queueService;
         }
 
         private async Task<List<Ticket>> BookTickets( TicketForm ticketForm )
         {
-            foreach( var id in ticketForm.FlightCodes )
+            foreach( var id in ticketForm.FlightIds )
             {
                 if( !FlightsData.HasAvailablePlace( id ) )
                 {
@@ -38,7 +39,7 @@ namespace FlyCie.App.Services
                 }
             }
 
-            var trips = FlightsData.GetRoundTrips( ticketForm.FlightCodes.ToList() );
+            var trips = FlightsData.GetRoundTrips( ticketForm.FlightIds.ToList() );
 
             var result = new List<Ticket>();
             foreach( var ( roundTrip, index ) in trips[ "RoundTrips" ].Select( (t, index) => (t, index) ) )
@@ -63,7 +64,7 @@ namespace FlyCie.App.Services
                 result.Add( ticket );
                 FlightsData.FlightList.Where( f => f.FlightCode == trip.FlightCode ).First().AvailablePlaces -= 1;
             }
-
+            _tickets.AddRange( result );
             return result;
         }
 
@@ -146,15 +147,15 @@ namespace FlyCie.App.Services
                 LastName = ticketForm.LastName,
                 Nationality = ticketForm.Nationality,
                 LoungeSupplement = ticketForm.LoungeSupplement,
-                FlightCodes = new List<string>(),
+                FlightIds = new List<string>(),
                 Currency = ticketForm.Currency,
             };
            
-            foreach (string code in ticketForm.FlightCodes)
+            foreach (string code in ticketForm.FlightIds)
             {
                 if ( FlightsData.IsOurTrip( code ) )
                 {
-                    ourFlightsIds.FlightCodes.Append( code );
+                    ourFlightsIds.FlightIds.Append( code );
                 }
                 else
                 {
@@ -173,7 +174,7 @@ namespace FlyCie.App.Services
 
                     var extTicket = ExternalModelHelper.MapTicket( ticket );
 
-                    await _externalTicketHandler.EnqueueTicket( extTicket );
+                    _queueService.EnqueueTicket( extTicket );
                 }
             }
 

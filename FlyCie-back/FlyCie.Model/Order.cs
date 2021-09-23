@@ -2,7 +2,7 @@
 {
     public class Order
     {
-        public Model.External.Ticket BoughtTicket { get; set; }
+        public External.Ticket BoughtTicket { get; set; }
         public int CommissionAmount { get; set; }
     }
 }

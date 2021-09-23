@@ -21,6 +21,12 @@ namespace FlyCie.External.WebHost.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok( "Hello bro !" );
+        }
+
         [HttpGet( "GetFlights" )]
         public async Task<IActionResult> GetAvailableFlights()
         {
