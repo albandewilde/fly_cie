@@ -1,4 +1,6 @@
-﻿namespace FlyCie.Model.External
+﻿using System.Collections.Generic;
+
+namespace FlyCie.Model.External
 {
     public class Flight
     {
@@ -8,5 +10,6 @@
         public int base_price { get; set; }
         public Plane plane { get; set; }
         public int seats_booked { get; set; }
+        public IEnumerable<FlightOptions> options { get; set; }
     }
 }

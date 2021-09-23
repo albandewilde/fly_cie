@@ -1,4 +1,5 @@
-﻿using FlyCie.Model;
+﻿using FlyCie.App.Helpers;
+using FlyCie.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,22 +8,22 @@ namespace FlyCie.App.Services
     public static class FlightsData
     {
         private static IEnumerable<Flight> _flights = new List<Flight>();
-        private static IEnumerable<Flight> _externalFlights = new List<Flight>();
+        private static IEnumerable<FlightApi> _externalFlights = new List<FlightApi>();
         public static IEnumerable<Flight> FlightList => _flights;
-        public static IEnumerable<Flight> ExternalFlights => _externalFlights;
+        public static IEnumerable<FlightApi> ExternalFlights => _externalFlights;
 
-        public static IEnumerable<Flight> GetAvailableFlights()
+        public static IEnumerable<FlightApi> GetAvailableFlights()
         {
-            var result = new List<Flight>();
-            result.AddRange( FlightList.Where( f => f.AvailablePlaces > 0 ) );
+            var result = new List<FlightApi>();
+            result.AddRange( FlightList.Where( f => f.AvailablePlaces > 0 ).Select( f => ExternalModelHelper.FlightToApi( f ) ) );
             result.AddRange( ExternalFlights.Where( f => f.AvailablePlaces > 0 ) );
             return result;
         }
 
-        public static void SetFlights( Dictionary<string, List<Flight>> flights )
+        public static void SetFlights( List<Flight> flights, List<FlightApi> externalFlights )
         {
-            _flights = flights[ "Flights" ];
-            _externalFlights = flights[ "ExternalFlights" ];
+            _flights = flights;
+            _externalFlights = externalFlights;
         }
 
         public static Flight GetFlight( string flightId, bool isOurs )

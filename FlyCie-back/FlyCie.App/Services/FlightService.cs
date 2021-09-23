@@ -24,7 +24,6 @@ namespace FlyCie.App.Services
         public async Task InitializeData()
         {
             var flights = new List<Flight>();
-            var allFlights = new Dictionary<string, List<Flight>>();
 
             flights.Add( new Flight
             {
@@ -80,19 +79,13 @@ namespace FlyCie.App.Services
                 AvailablePlaces = 300,
                 Price = 300
             } );
-            allFlights[ "Flights" ] = flights;
 
             _logger.LogInformation( "Fetching external flights." );
             var externalFlights = await _externalService.GetExternalFlights();
-            var flightsToRemove = allFlights[ "Flights" ].FindAll( f => externalFlights.ToList().FindIndex( ef => ef.From == f.From && ef.To == f.To ) >= 0 );
-            allFlights[ "Flights" ].RemoveAll( f => flightsToRemove.Contains( f ) );
+            var flightsToRemove = flights.FindAll( f => externalFlights.ToList().FindIndex( ef => ef.From == f.From && ef.To == f.To ) >= 0 );
+            flights.RemoveAll( f => flightsToRemove.Contains( f ) );
 
-            if( !( externalFlights is null ) )
-            {
-                allFlights[ "ExternalFlights" ] = externalFlights.ToList();
-            }
-
-            FlightsData.SetFlights( allFlights );
+            FlightsData.SetFlights( flights, externalFlights.ToList() );
         }
 
         protected override async Task ExecuteAsync( CancellationToken stoppingToken )

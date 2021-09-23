@@ -18,6 +18,34 @@ namespace FlyCie.App.Helpers
                 TotalPlaces = flight.plane.total_seats
             };
         }
+
+        public static FlightApi MapFlightApi( Model.External.Flight flight )
+        {
+            return new FlightApi
+            {
+                AvailablePlaces = flight.plane.total_seats - flight.seats_booked,
+                FlightCode = flight.code,
+                From = Enum.Parse<Airport>( flight.departure ),
+                To = Enum.Parse<Airport>( flight.arrival ),
+                Price = flight.base_price,
+                TotalPlaces = flight.plane.total_seats,
+                Options = flight.options
+            };
+        }
+
+        public static FlightApi FlightToApi( Flight flight )
+        {
+            return new FlightApi
+            {
+                AvailablePlaces = flight.AvailablePlaces,
+                FlightCode = flight.FlightCode,
+                From = flight.From,
+                To = flight.To,
+                Price = flight.Price,
+                TotalPlaces = flight.TotalPlaces,
+                Options = null
+            };
+        }
         
         public static Model.External.Ticket MapTicket( Ticket ticket )
         {
