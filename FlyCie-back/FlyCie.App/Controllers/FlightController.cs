@@ -38,6 +38,12 @@ namespace FlyCie.App.Controllers
             return Ok( FlightsData.GetAvailableFlights() );
         }
 
+        [HttpGet( "GetOurFlights" )]
+        public async Task<IActionResult> GetOurFlights()
+        {
+            return Ok( FlightsData.FlightList );
+        }
+
         [HttpPost( "BookTicket" )]
         public async Task<IActionResult> BookTicket( [FromBody]TicketForm ticketForm )
         {

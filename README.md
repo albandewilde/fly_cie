@@ -43,6 +43,20 @@ enum Airport {
 }
 ```
 
+api/flight/GetOurFlights
+=> return an array of Flight
+
+```json
+{
+    "FlightId": 1,
+    "From": "DTW",
+    "To": "CDG",
+    "AvailablePlaces": 700,
+    "TotalPlaces": 700,
+    "Price": 700
+}
+```
+
 POST :  
 api/flight/bookTicket
 => body contains
