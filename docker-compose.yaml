@@ -6,6 +6,8 @@ services:
             context: "./FlyCie-back/"
             dockerfile: "./images/server.Dockerfile"
         ports: [7860:80]
+        depends_on:
+            - "external"
 
     currency:
         build: "./currency/"
@@ -20,3 +22,7 @@ services:
             context: "./FlyCie-back/"
             dockerfile: "./images/external.Dockerfile"
         ports: [7863:80]
+
+    out:
+        build: "./out/"
+        ports: [7864:7864]
