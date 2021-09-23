@@ -27,15 +27,15 @@ namespace FlyCie.App.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Flight>> GetExternalFlights()
+        public async Task<IEnumerable<FlightApi>> GetExternalFlights()
         {
             try
             {
                 var response = await _httpClient.GetAsync( $"{_options.ExternalApiUrl}/api/external/GetFlights" );
                 var responseString = await response.Content.ReadAsStringAsync();
                 var externalFlights = JsonSerializer.Deserialize<List<Model.External.Flight>>( responseString );
-
-                return from ef in externalFlights select ExternalModelHelper.MapFlight( ef );
+                
+                return from ef in externalFlights select ExternalModelHelper.MapFlightApi( ef );
             }
             catch ( Exception e )
             {

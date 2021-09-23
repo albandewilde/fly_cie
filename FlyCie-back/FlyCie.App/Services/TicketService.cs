@@ -30,16 +30,16 @@ namespace FlyCie.App.Services
 
         private async Task<List<Ticket>> BookTickets( TicketForm ticketForm )
         {
-            foreach( var id in ticketForm.FlightCodes )
+            foreach( var order in ticketForm.FlightCodes )
             {
-                if( !FlightsData.HasAvailablePlace( id ) )
+                if( !FlightsData.HasAvailablePlace( order.Code ) )
                 {
-                    _logger.LogError( $"Flight #{id} has no available places" );                 
+                    _logger.LogError( $"Flight #{order} has no available places" );                 
                     return null;
                 }
             }
 
-            var trips = FlightsData.GetRoundTrips( ticketForm.FlightCodes.ToList() );
+            var trips = FlightsData.GetRoundTrips( ticketForm.FlightCodes.Select( f => f.Code ).ToList() );
 
             var result = new List<Ticket>();
             foreach( var ( roundTrip, index ) in trips[ "RoundTrips" ].Select( (t, index) => (t, index) ) )
@@ -71,7 +71,7 @@ namespace FlyCie.App.Services
         private async Task<Ticket> CreateTicket( Flight flight, string lastName, string firstName, string nat, string currencyName, bool loungeSupplement, bool isRoundTrip )
         {
             var price = isRoundTrip ? flight.Price * 0.9 : flight.Price;
-            if( flight.From != Airport.DTW )
+            if( Enum.Parse<Airport>( flight.From ) != Airport.DTW )
             {
                 if( loungeSupplement )
                 {
@@ -147,19 +147,19 @@ namespace FlyCie.App.Services
                 LastName = ticketForm.LastName,
                 Nationality = ticketForm.Nationality,
                 LoungeSupplement = ticketForm.LoungeSupplement,
-                FlightCodes = new List<string>(),
+                FlightCodes = new List<FlightOrder>(),
                 Currency = ticketForm.Currency,
             };
            
-            foreach (string code in ticketForm.FlightCodes)
+            foreach (var order in ticketForm.FlightCodes)
             {
-                if ( FlightsData.IsOurTrip( code ) )
+                if ( FlightsData.IsOurTrip( order.Code ) )
                 {
-                    ourFlightsIds.FlightCodes = ourFlightsIds.FlightCodes.Append( code );
+                    ourFlightsIds.FlightCodes = ourFlightsIds.FlightCodes.Append( order );
                 }
                 else
                 {
-                    var flight = FlightsData.GetFlight( code, false );
+                    var flight = FlightsData.GetFlight( order.Code, false );
                     Ticket ticket = new Ticket
                     {
                         Flight = flight,

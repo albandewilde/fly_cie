@@ -22,17 +22,24 @@ api/flight/getFlights
 enum Airport {
     DTW,
     CDG,
-    JFK
+    JFK,
+    LAD
 }
 
 ```json
 {
     "FlightId": 1,
-    "From": 1,
-    "To": 2,
+    "From": "DTW",
+    "To": "CDG",
     "AvailablePlaces": 700,
     "TotalPlaces": 700,
-    "Price": 700
+    "Price": 700,
+    "Options": [
+        {
+            "option_type": "string",
+            "price": 100
+        }
+    ]
 }
 ```
 
@@ -44,7 +51,12 @@ api/flight/bookTicket
     "LastName": "string",
     "FirstName": "string",
     "Nationality": "string",
-    "FlightIds": [1, 2, 3],
+    "FlightCodes": [
+        {
+            "code": "string", 
+            "options": ["string","string"]
+        }
+    ],
     "LoungeSupplement": true,
     "Currency": "string"
 }
@@ -107,6 +119,30 @@ GET:
 # External service
 
 The external service run on the port `7863` on all interfaces.
+
+GET:
+/api/external/GetFlights
+=> returns external flights
+
+POST:
+/api/external/BookTicket
+```json
+"code": ""
+"flight": {
+
+},
+"date":"25-09-2021",
+"payed_price": 1000,
+"customer_name": "toto",
+"customer_nationality": "toto",
+"booking_source": "toto",
+"options": null | [
+    {
+        "option_type": "",
+        "price": 1
+    }
+]
+```
 
 # The out
 

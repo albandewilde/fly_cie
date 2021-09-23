@@ -32,7 +32,16 @@ namespace FlyCie.External.WebHost.Services
                 var response = await _httpClient.GetAsync( $"{_options.ApiUrl}flights" );
                 var responseString = await response.Content.ReadAsStringAsync();
                 var flights = JsonSerializer.Deserialize<List<Model.External.Flight>>( responseString );
-            
+                
+                foreach( var f in flights )
+                {
+                    _logger.LogInformation( $"Trying to fetch #{f.code}'s available options" );
+                    var res = await _httpClient.GetAsync( $"{_options.ApiUrl}available_options/{f.code}" );
+                    var resString = await res.Content.ReadAsStringAsync();
+                    var options = JsonSerializer.Deserialize<List<Model.External.FlightOptions>>( resString );
+                    f.options = options;
+                } 
+
                 return flights;
             }
             catch( Exception e )
