@@ -12,8 +12,8 @@ namespace FlyCie.App.Helpers
             {
                 AvailablePlaces = flight.plane.total_seats - flight.seats_booked,
                 FlightCode = flight.code,
-                From = Enum.Parse<Airport>( flight.departure ),
-                To = Enum.Parse<Airport>( flight.arrival ),
+                From = flight.departure,
+                To = flight.arrival,
                 Price = flight.base_price,
                 TotalPlaces = flight.plane.total_seats
             };
@@ -25,8 +25,8 @@ namespace FlyCie.App.Helpers
             {
                 AvailablePlaces = flight.plane.total_seats - flight.seats_booked,
                 FlightCode = flight.code,
-                From = Enum.Parse<Airport>( flight.departure ),
-                To = Enum.Parse<Airport>( flight.arrival ),
+                From = flight.departure,
+                To = flight.arrival,
                 Price = flight.base_price,
                 TotalPlaces = flight.plane.total_seats,
                 Options = flight.options
