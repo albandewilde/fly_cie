@@ -15,6 +15,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @NgModule( {
   declarations: [
@@ -36,7 +37,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     NzInputModule,
     NzSelectModule,
     NzSwitchModule,
-    NzTableModule
+    NzTableModule,
+    NzDividerModule
   ],
   exports: [
     BookFormComponent

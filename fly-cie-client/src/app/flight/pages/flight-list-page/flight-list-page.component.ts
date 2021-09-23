@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 import { CurrenciesApiService } from 'src/app/core/api/currency-api.service';
 import { FlightApiService } from 'src/app/core/api/flight-api.service';
 import { Airport } from 'src/app/core/models/airport.model';
-import { Ticket } from 'src/app/core/models/book.models';
+import { Ticket, TicketOptions } from 'src/app/core/models/book.models';
 import { Flight } from 'src/app/core/models/flight.models';
 
 @Component( {
@@ -15,7 +15,6 @@ import { Flight } from 'src/app/core/models/flight.models';
 } )
 export class FlightListPageComponent implements OnInit {
 
-  private _airportEnum = Airport;
   public flightsList: Array<Flight>;
   public airports: Array<string>;
   public ticket: Ticket;
@@ -31,14 +30,14 @@ export class FlightListPageComponent implements OnInit {
   ) {
     this.airports = new Array<string>();
     this.flightsList = new Array<Flight>();
-    this.currenciesList = new Array<string>();
+    this.currenciesList = ['EUR']
     this.forms = new Array<FormGroup>();
     this.initializeForm();
   }
 
   initializeForm(): void {
     this.bookForm = this._formBuilder.group( {
-      currency: ['USD', Validators.required],
+      currency: ['EUR', Validators.required],
       lastName: [null, Validators.required],
       firstName: [null, Validators.required],
       nationality: [null, Validators.required]
@@ -64,7 +63,7 @@ export class FlightListPageComponent implements OnInit {
     this._flightApiService.getFlights().pipe( first() ).subscribe( ( res: Array<Flight> ) => {
       this.flightsList = [...res];
       this.airports = res.map( f => {
-        return this._airportEnum[f.from];
+        return f.from;
       } );
       this.airports = this.airports.filter( ( value, index ) => this.airports.indexOf( value ) === index );
     } );
@@ -72,28 +71,38 @@ export class FlightListPageComponent implements OnInit {
 
   getCurrencies(): void {
     this._currenciesApiService.getCurrencies().pipe( first() ).subscribe( ( res: Array<string> ) => {
-      this.currenciesList = [...res];
-    } );
+      res.forEach( currency => {
+        this.currenciesList.push(currency)
+      })
+    });
   }
 
   getRate(): number {
-    this._currenciesApiService.getCurrencyRate( this.bookForm.get( 'currency' )?.value ).pipe( first() ).subscribe( ( res: number ) => {
-      this.rate = res
-    } );
-    return this.rate;
+    if (this.bookForm.get('currency')?.value !== 'EUR') {
+      this._currenciesApiService.getCurrencyRate( this.bookForm.get( 'currency' )?.value ).pipe( first() ).subscribe( ( res: number ) => {
+        this.rate = res
+      } );
+      return this.rate;
+    } else {
+      return this.rate = 1
+    }
   }
 
   submitForm() {
-    let ids: Array<string> = [];
+    let ids: Array<TicketOptions> = [];
     this.forms.forEach( ticket => {
-      const flightId = this.flightsList.find( f =>
-        this._airportEnum[f.from] == ticket.get( 'from' )?.value && this._airportEnum[f.to] == ticket.get( 'to' )?.value
-      )!.flightCode;
+      const flightId: TicketOptions = {
+        code: this.flightsList.find( f =>
+        f.from == ticket.get( 'from' )?.value && f.to == ticket.get( 'to' )?.value
+      )!.flightCode
+    }
       ids.push( flightId );
       if ( ticket.get( 'oneWay' )?.value ) {
-        const flightId = this.flightsList.find( f =>
-          this._airportEnum[f.from] == ticket.get( 'to' )?.value && this._airportEnum[f.to] == ticket.get( 'from' )?.value
-        )!.flightCode;
+        const flightId: TicketOptions = {
+          code: this.flightsList.find( f =>
+          f.from == ticket.get( 'to' )?.value && f.to == ticket.get( 'from' )?.value
+        )!.flightCode
+          }
         ids.push( flightId );
       }
     } )
@@ -114,18 +123,24 @@ export class FlightListPageComponent implements OnInit {
     console.log( newTicket );
     this._flightApiService.bookTicket( newTicket ).subscribe();
   }
+ 
+  getOptions(ticket: FormGroup) {
+    return this.flightsList.find(f =>
+        f.from == ticket.get('from')?.value && f.to == ticket.get('to')?.value
+    )!.options;
+}
 
   getTotal() {
     let flightPrice = 0;
     let numberOfLounge = 0;
     this.forms.forEach( ticket => {
       const ticketPrice = this.flightsList.find( f =>
-        this._airportEnum[f.from] == ticket.get( 'from' )?.value
-        && this._airportEnum[f.to] == ticket.get( 'to' )?.value
+        f.from == ticket.get( 'from' )?.value
+        && f.to == ticket.get( 'to' )?.value
       )?.price as number;
 
       if ( ticket.get( 'oneWay' )?.value ) {
-        flightPrice += ticketPrice * 2
+        flightPrice += (ticketPrice * 2) * 0.9
       } else {
         flightPrice += ticketPrice
       }
