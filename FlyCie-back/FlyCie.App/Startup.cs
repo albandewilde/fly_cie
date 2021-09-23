@@ -46,7 +46,6 @@ namespace FlyCie.App
                     .AllowAnyHeader()
                     .AllowCredentials() );
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
