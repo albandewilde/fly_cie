@@ -35,7 +35,7 @@
                 <nz-form-label [nzSpan]="10">Options du vol</nz-form-label>
                 <nz-form-control [nzSpan]="10">
                     <nz-select nzMode="multiple" nzAllowClear nzPlaceholder="Choisissez vos options">
-                        <nz-option *ngFor="let options of flightOptions" [nzValue]="options.option_type" [nzLabel]="options.option_type"></nz-option>
+                        <nz-option *ngFor="let options of flightOptions" formControlName="options" [nzValue]="options.option_type" [nzLabel]="options.option_type"></nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
