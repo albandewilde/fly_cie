@@ -29,8 +29,8 @@ enum Airport {
 ```json
 {
     "FlightId": 1,
-    "From": 1,
-    "To": 2,
+    "From": "DTW",
+    "To": "CDG",
     "AvailablePlaces": 700,
     "TotalPlaces": 700,
     "Price": 700,
