@@ -3,7 +3,7 @@
     <div>
         <h1>Faire ma réservation</h1>
         <div class="card-list">
-            <app-book-form *ngFor="let form of forms; let i = index" [ticketForm]="form" [ticketNumber]="i" [airports]="airports"></app-book-form>
+            <app-book-form *ngFor="let form of forms; let i = index" [ticketForm]="form" [ticketNumber]="i" [airports]="airports" [flightsList]="flightsList" [flightOptions]="getOptions(form)"></app-book-form>
         </div>
 
         <button nz-button nzType="primary" (click)="initializeTicketForm()">Ajouter un billet</button>
