@@ -49,13 +49,22 @@ namespace FlyCie.External.WebHost.Services
                 _logger.LogInformation( $"Trying to send request to book ticket" );
                 var content = JsonSerializer.Serialize( ticket );
                 var response = await _httpClient.PostAsync(
-                    $"{_options.ApiUrl}/book",
+                    $"{_options.ApiUrl}book",
                     new StringContent( content, Encoding.UTF8, "application/json" )
                 );
-                var responseString = await response.Content.ReadAsStringAsync();
-                _logger.LogInformation( "Successfully booked a ticket." );
+                if( response.StatusCode == System.Net.HttpStatusCode.OK )
+                {
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    _logger.LogInformation( "Successfully booked a ticket." );
 
-                return JsonSerializer.Deserialize<Model.External.Ticket>( responseString );
+                    return ticket;
+                }
+                else
+                {
+                    _logger.LogError( "An error occured while trying to book a ticket from External" );
+
+                    return null;
+                }
             }
             catch ( Exception e )
             {

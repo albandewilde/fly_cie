@@ -30,7 +30,7 @@ namespace FlyCie.App.Services
 
         private async Task<List<Ticket>> BookTickets( TicketForm ticketForm )
         {
-            foreach( var id in ticketForm.FlightIds )
+            foreach( var id in ticketForm.FlightCodes )
             {
                 if( !FlightsData.HasAvailablePlace( id ) )
                 {
@@ -39,7 +39,7 @@ namespace FlyCie.App.Services
                 }
             }
 
-            var trips = FlightsData.GetRoundTrips( ticketForm.FlightIds.ToList() );
+            var trips = FlightsData.GetRoundTrips( ticketForm.FlightCodes.ToList() );
 
             var result = new List<Ticket>();
             foreach( var ( roundTrip, index ) in trips[ "RoundTrips" ].Select( (t, index) => (t, index) ) )
@@ -147,15 +147,15 @@ namespace FlyCie.App.Services
                 LastName = ticketForm.LastName,
                 Nationality = ticketForm.Nationality,
                 LoungeSupplement = ticketForm.LoungeSupplement,
-                FlightIds = new List<string>(),
+                FlightCodes = new List<string>(),
                 Currency = ticketForm.Currency,
             };
            
-            foreach (string code in ticketForm.FlightIds)
+            foreach (string code in ticketForm.FlightCodes)
             {
                 if ( FlightsData.IsOurTrip( code ) )
                 {
-                    ourFlightsIds.FlightIds.Append( code );
+                    ourFlightsIds.FlightCodes = ourFlightsIds.FlightCodes.Append( code );
                 }
                 else
                 {
@@ -177,8 +177,10 @@ namespace FlyCie.App.Services
                     _queueService.EnqueueTicket( extTicket );
                 }
             }
-
-            tickets.AddRange( await BookTickets( ourFlightsIds ) );
+            if( ourFlightsIds.FlightCodes.Count() > 0 )
+            {
+                tickets.AddRange( await BookTickets( ourFlightsIds ) );
+            }
             
             return tickets;
         }

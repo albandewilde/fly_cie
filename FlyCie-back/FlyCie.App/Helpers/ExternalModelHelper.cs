@@ -39,8 +39,9 @@ namespace FlyCie.App.Helpers
                     },
                     seats_booked = ticket.Flight.TotalPlaces - ticket.Flight.AvailablePlaces
                 },
-                date = DateTime.UtcNow.ToString(),
+                date = DateTime.UtcNow.ToString("dd-MM-yyyy"),
                 options = new List<Model.External.FlightOptions>(),
+                booking_source = "BAA",
                 payed_price = Convert.ToInt32( ticket.Price * ticket.Currency.Rate )
             };
         }

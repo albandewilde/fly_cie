@@ -19,11 +19,12 @@ namespace FlyCie.App.Services
         private readonly HttpClient _httpClient;
 
         public ExternalService( 
-            ILogger<FlightService> logger,
+            ILogger<ExternalService> logger,
             IOptionsMonitor<ExternalApiOptions> options )
         {
             _options = options.CurrentValue;
             _httpClient = new HttpClient();
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Flight>> GetExternalFlights()

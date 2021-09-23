@@ -1,7 +1,7 @@
 import { Airport } from "./airport.model";
 
 export interface Flight {
-    flightId: number;
+    flightCode: string;
     from: Airport;
     to: Airport;
     availablePlaces: number;

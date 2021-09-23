@@ -84,6 +84,9 @@ namespace FlyCie.App.Services
 
             _logger.LogInformation( "Fetching external flights." );
             var externalFlights = await _externalService.GetExternalFlights();
+            var flightsToRemove = allFlights[ "Flights" ].FindAll( f => externalFlights.ToList().FindIndex( ef => ef.From == f.From && ef.To == f.To ) >= 0 );
+            allFlights[ "Flights" ].RemoveAll( f => flightsToRemove.Contains( f ) );
+
             if( !( externalFlights is null ) )
             {
                 allFlights[ "ExternalFlights" ] = externalFlights.ToList();

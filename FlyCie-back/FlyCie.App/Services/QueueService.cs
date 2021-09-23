@@ -8,9 +8,10 @@ namespace FlyCie.App.Services
         private ConcurrentQueue<Model.External.Ticket> _queue;
         private ILogger<QueueService> _logger;
 
-        public QueueService()
+        public QueueService( ILogger<QueueService> logger)
         {
             _queue = new ConcurrentQueue<Model.External.Ticket>();
+            _logger = logger;
         }
 
         public ConcurrentQueue<Model.External.Ticket> Queue => _queue;

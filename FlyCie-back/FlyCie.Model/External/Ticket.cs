@@ -12,6 +12,7 @@ namespace FlyCie.Model.External
         public int payed_price { get; set; }
         public string customer_name { get; set; }
         public string customer_nationality { get; set; }
+        public string booking_source { get; set; }
         public List<FlightOptions>? options { get; set; }
     }
 }
