@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyCie.App", "FlyCie.App\Fl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyCie.Model", "FlyCie.Model\FlyCie.Model.csproj", "{06896138-8BFA-450B-87AE-7BA7A2F2D3C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyCie.External.WebHost", "FlyCie.External.WebHost\FlyCie.External.WebHost.csproj", "{135CB389-734E-48B9-8CC6-D4A2D33BCD76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyCie.External.WebHost", "FlyCie.External.WebHost\FlyCie.External.WebHost.csproj", "{135CB389-734E-48B9-8CC6-D4A2D33BCD76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyCie.MTD.WebHost", "FlyCie.MTD.WebHost\FlyCie.MTD.WebHost.csproj", "{6B2FA158-22D5-42BF-A6FB-2DBC5044842D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{135CB389-734E-48B9-8CC6-D4A2D33BCD76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{135CB389-734E-48B9-8CC6-D4A2D33BCD76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{135CB389-734E-48B9-8CC6-D4A2D33BCD76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B2FA158-22D5-42BF-A6FB-2DBC5044842D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B2FA158-22D5-42BF-A6FB-2DBC5044842D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B2FA158-22D5-42BF-A6FB-2DBC5044842D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B2FA158-22D5-42BF-A6FB-2DBC5044842D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
