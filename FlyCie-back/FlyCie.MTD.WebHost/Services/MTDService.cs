@@ -1,7 +1,9 @@
 ﻿using FlyCie.Model;
+using FlyCie.MTD.WebHost.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -26,14 +28,21 @@ namespace FlyCie.MTD.WebHost.Services
         public async Task<IEnumerable<FlightApi>> RequestFlights()
         {
             var requestUrl = $"{_options.ApiUrl}/getAllFlights";
+
             using ( var requestMessage = new HttpRequestMessage( HttpMethod.Get, requestUrl ) )
             {
                 requestMessage.Headers.Add( "ApiKey", _options.ApiKey );
                 var response = await _httpClient.SendAsync( requestMessage );
                 var resString = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<FlightApi>>( resString );
-                // to do : Map their model into FlightApi and return result
+                var flights = JsonSerializer.Deserialize<List<MTDFlight>>( resString );
+
+                return flights.Select( f => ModelMapper.MapToFlightApi( f ) );
             }
+        }
+
+        public async Task PostBookTicket()
+        {
+
         }
     }
 

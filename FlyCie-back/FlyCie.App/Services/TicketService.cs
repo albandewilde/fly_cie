@@ -23,7 +23,7 @@ namespace FlyCie.App.Services
         {
             _logger = logger;
             _httpClient = new HttpClient();
-            _currencyRequestUrl = "http://localhost:7861/";
+            _currencyRequestUrl = "http://currency:7861/";
             _tickets = new List<Ticket>();
             _queueService = queueService;
         }

@@ -49,9 +49,9 @@ namespace FlyCie.App.Services
             while( flightIds.Count > 0 )
             {
                 var flight = GetFlight( flightIds[ 0 ], true );
-                var roundTrip = FlightList.First( f => f.From == flight.To && f.To == flight.From );
+                var roundTrip = FlightList.FirstOrDefault( f => f.From == flight.To && f.To == flight.From );
 
-                if ( flightIds.Contains( roundTrip.FlightCode ) )
+                if ( !(roundTrip is null) && flightIds.Contains( roundTrip.FlightCode ) )
                 {
                     result[ "RoundTrips" ].Add( flight );
                     result[ "RoundTrips" ].Add( roundTrip );
