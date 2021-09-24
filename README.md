@@ -190,3 +190,17 @@ GET:
     }
 ]
 ```
+
+POST:  
+/book/
+=> return `Ok 200` if everythings is good.
+```json
+{
+   "fname": "Alban",
+   "lname": "De Wilde",
+   "nat": "FR",
+   "flight_codes": ["flightcode1", "flightcode3"],
+   "lounge_supplement": false,
+   "currency": "PHP"
+}
+```
