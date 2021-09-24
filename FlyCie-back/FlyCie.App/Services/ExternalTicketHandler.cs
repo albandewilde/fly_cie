@@ -1,7 +1,9 @@
-﻿using FlyCie.Model;
+﻿using FlyCie.App.Helpers;
+using FlyCie.Model;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,12 +42,17 @@ namespace FlyCie.App.Services
                         var createdTicket = await _externalService.SendBookTicket( ticket );
                         if( !(createdTicket is null) )
                         {
-                            _ticketList.Add( createdTicket );
-                            _orders.Add( new Order
+                            var tickets = TicketsData.TicketList;
+                            tickets.ToList().Add( ExternalModelHelper.MapTicket( createdTicket ) );
+                            TicketsData.SetTickets( tickets );
+
+                            var orders = TicketsData.Orders;
+                            orders.ToList().Add( new Order
                             {
                                 BoughtTicket = ticket,
                                 CommissionAmount = commissionAmount
                             } );
+                            TicketsData.SetOrders( orders );
                         }
                     }
                 }

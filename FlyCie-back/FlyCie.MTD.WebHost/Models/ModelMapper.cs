@@ -11,9 +11,6 @@ namespace FlyCie.MTD.WebHost.Models
     {
         public static FlightApi MapToFlightApi( MTDFlight flight )
         {
-            var fields = new Dictionary<string, object>();
-            fields.Add( "AdditionalLuggage", 0 );
-
             return new FlightApi
             {
                 AvailablePlaces = flight.AvailableSeats,
@@ -21,8 +18,14 @@ namespace FlyCie.MTD.WebHost.Models
                 From = flight.DeparturePlace,
                 Price = flight.BasePrice,
                 To = flight.ArrivalPlace,
-                Options = null,
-                AdditionalFields = fields
+                Options = new List<FlightOptions>
+                {
+                    new FlightOptions
+                    {
+                        option_type = "AdditionalLuggage",
+                        price = 100
+                    }
+                }
             };
         }
     }

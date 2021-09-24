@@ -69,10 +69,24 @@ namespace FlyCie.App.Helpers
                     },
                     seats_booked = ticket.Flight.TotalPlaces - ticket.Flight.AvailablePlaces
                 },
-                date = DateTime.UtcNow.ToString("dd-MM-yyyy"),
+                date = ticket.Date.ToString("dd-MM-YYYY"),
                 options = new List<Model.External.FlightOptions>(),
                 booking_source = "BAA",
                 payed_price = Convert.ToInt32( ticket.Price * ticket.Currency.Rate )
+            };
+        }
+
+        public static Ticket MapTicket( Model.External.Ticket ticket )
+        {
+            return new Ticket
+            {
+                Date = DateTime.Parse( ticket.date ),
+                FirstName = ticket.customer_name,
+                Flight = MapFlight( ticket.flight ),
+                LastName = ticket.customer_name,
+                Nationality = ticket.customer_nationality,
+                Price = ticket.payed_price,
+                LoungeSupplement = false
             };
         }
     }

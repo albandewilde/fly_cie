@@ -32,7 +32,7 @@ namespace FlyCie.App.Services
         {
             foreach( var order in ticketForm.FlightCodes )
             {
-                if( !FlightsData.HasAvailablePlace( order.Code ) )
+                if( !FlightsData.HasAvailablePlace( order.Code, ticketForm.SelectedDate ) )
                 {
                     _logger.LogError( $"Flight #{order} has no available places" );                 
                     return null;
@@ -149,6 +149,7 @@ namespace FlyCie.App.Services
                 LoungeSupplement = ticketForm.LoungeSupplement,
                 FlightCodes = new List<FlightOrder>(),
                 Currency = ticketForm.Currency,
+                SelectedDate = ticketForm.SelectedDate
             };
            
             foreach (var order in ticketForm.FlightCodes)
@@ -163,13 +164,13 @@ namespace FlyCie.App.Services
                     Ticket ticket = new Ticket
                     {
                         Flight = flight,
-                        Date = DateTime.UtcNow,
+                        Date = ticketForm.SelectedDate,
                         Price = flight.Price,
                         FirstName = ticketForm.FirstName,
                         LastName = ticketForm.LastName,
                         Nationality = ticketForm.Nationality,
                         LoungeSupplement = ticketForm.LoungeSupplement,
-                        Currency = await GetCurrency( ticketForm.Currency ),
+                        Currency = await GetCurrency( ticketForm.Currency )
                     };
 
                     var extTicket = ExternalModelHelper.MapTicket( ticket );
