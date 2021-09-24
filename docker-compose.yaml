@@ -8,6 +8,7 @@ services:
         ports: [7860:80]
         depends_on:
             - "external"
+            - "mtd"
 
     currency:
         build: "./currency/"
@@ -26,3 +27,9 @@ services:
     out:
         build: "./out/"
         ports: [7864:7864]
+
+    mtd:
+        build:
+            context: "./FlyCie-back/"
+            dockerfile: "./images/mtd.Dockerfile"
+        ports: [7865:80]
