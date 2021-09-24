@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FlyCie.Model
 {
@@ -10,5 +11,6 @@ namespace FlyCie.Model
         public bool LoungeSupplement { get; set; }
         public IEnumerable<FlightOrder> FlightCodes { get; set; }
         public string Currency { get; set; }
+        public DateTime SelectedDate { get; set; }
     }
 }

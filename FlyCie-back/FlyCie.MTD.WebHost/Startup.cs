@@ -20,6 +20,7 @@ namespace FlyCie.MTD.WebHost
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddControllers();
+            services.AddSingleton<MTDService>();
             services.Configure<MTDServiceOptions>( o =>
             {
                 o.ApiKey = Configuration[ "ApiKey" ];

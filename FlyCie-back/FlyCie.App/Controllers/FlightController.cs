@@ -4,6 +4,7 @@ using FlyCie.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,27 +46,36 @@ namespace FlyCie.App.Controllers
         }
 
         [HttpPost( "BookTicket" )]
-        public async Task<IActionResult> BookTicket( [FromBody]TicketForm ticketForm )
+        public async Task<IActionResult> BookTicket( [FromBody]IEnumerable<TicketForm> ticketForms )
         {
             try
             {
-                if ( string.IsNullOrWhiteSpace( ticketForm.Currency )
-                    || string.IsNullOrWhiteSpace( ticketForm.FirstName )
-                    || string.IsNullOrWhiteSpace( ticketForm.LastName )
-                    || string.IsNullOrWhiteSpace( ticketForm.Nationality )
-                    || ticketForm.FlightCodes.ToList().Count <= 0 )
+                foreach( var ticketForm in ticketForms )
                 {
-                    _logger.LogError( "Form contains parameters that don't match requirements" );
-                    return StatusCode( 422, "Form contains parameters that don't match requirements" );
+                    if ( string.IsNullOrWhiteSpace( ticketForm.Currency )
+                        || string.IsNullOrWhiteSpace( ticketForm.FirstName )
+                        || string.IsNullOrWhiteSpace( ticketForm.LastName )
+                        || string.IsNullOrWhiteSpace( ticketForm.Nationality )
+                        || ticketForm.FlightCodes.ToList().Count <= 0 )
+                    {
+                        _logger.LogError( "Form contains parameters that don't match requirements" );
+                        return StatusCode( 422, "Form contains parameters that don't match requirements" );
+                    }
                 }
 
-                _logger.LogInformation( 
-                    $"Trying to book tickets for user: {ticketForm.LastName} {ticketForm.FirstName}" 
-                );
+                var result = new List<Ticket>();
+                foreach ( var ticketForm in ticketForms )
+                {
+                    _logger.LogInformation( 
+                        $"Trying to book tickets for user: {ticketForm.LastName} {ticketForm.FirstName}" 
+                    );
 
-                var result = await _ticketService.HandleBook( ticketForm );
+                    result.AddRange( await _ticketService.HandleBook( ticketForm ) );
 
-                _logger.LogInformation( "Creating tickets was succefully executed" );
+                    _logger.LogInformation( "Creating tickets was succefully executed" );
+
+                }
+
                 return Ok( result );
             }
             catch( Exception e )

@@ -1,5 +1,6 @@
 ﻿using FlyCie.App.Helpers;
 using FlyCie.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,9 +36,13 @@ namespace FlyCie.App.Services
             return ExternalFlights.FirstOrDefault( f => string.Equals( f.FlightCode, flightId ) );
         }
 
-        public static bool HasAvailablePlace( string flightId )
+        public static bool HasAvailablePlace( string flightId, DateTime selectedDate )
         {
-            return GetFlight( flightId, true ).AvailablePlaces > 0;
+            var flight = GetFlight( flightId, true );
+            var tickets = TicketsData.TicketList;
+
+            var bookedPlaces = tickets.Where( t => t.Flight == flight && t.Date == selectedDate ).Count();
+            return bookedPlaces < flight.TotalPlaces;
         }
 
         public static Dictionary<string, List<Flight>> GetRoundTrips( List<string> flightIds )
