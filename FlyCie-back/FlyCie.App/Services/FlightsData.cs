@@ -21,10 +21,14 @@ namespace FlyCie.App.Services
             return result;
         }
 
-        public static void SetFlights( List<Flight> flights, List<FlightApi> externalFlights )
+        public static void SetFlights( 
+            List<Flight> flights, 
+            List<FlightApi> externalFlights,
+            List<FlightApi> mtdFlights )
         {
             _flights = flights;
             _externalFlights = externalFlights;
+            _externalFlights.ToList().AddRange( mtdFlights );
         }
 
         public static Flight GetFlight( string flightId, bool isOurs )

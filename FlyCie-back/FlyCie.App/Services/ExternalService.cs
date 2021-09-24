@@ -1,5 +1,6 @@
 ﻿using FlyCie.App.Helpers;
 using FlyCie.Model;
+using FlyCie.Model.MTD;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -62,6 +63,23 @@ namespace FlyCie.App.Services
             catch ( Exception e )
             {
                 _logger.LogError( "An error occurred while booking a ticket", e );
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<FlightApi>> GetMTDFlights()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync( $"{_options.ExternalApiUrl}/api/external/GetFlights" );
+                var responseString = await response.Content.ReadAsStringAsync();
+                var externalFlights = JsonSerializer.Deserialize<List<MTDFlight>>( responseString );
+
+                return from ef in externalFlights select MTDModelMapper.MapToFlightApi( ef );
+            }
+            catch( Exception e )
+            {
+                _logger.LogError( "An error occurred while fetching flights from MTD", e );
                 return null;
             }
         }

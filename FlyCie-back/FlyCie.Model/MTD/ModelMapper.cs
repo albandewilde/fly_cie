@@ -1,11 +1,7 @@
-﻿using FlyCie.Model;
-using FlyCie.Model.External;
-using System;
+﻿using FlyCie.Model.External;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FlyCie.MTD.WebHost.Models
+namespace FlyCie.Model.MTD
 {
     public static class ModelMapper
     {

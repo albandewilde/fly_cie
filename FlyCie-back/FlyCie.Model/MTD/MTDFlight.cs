@@ -1,4 +1,4 @@
-﻿namespace FlyCie.MTD.WebHost.Models
+﻿namespace FlyCie.Model.MTD
 {
     public class MTDFlight
     {

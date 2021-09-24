@@ -30,7 +30,8 @@ namespace FlyCie.App.Helpers
                 Price = flight.base_price,
                 TotalPlaces = flight.plane.total_seats,
                 Options = flight.options,
-                AdditionalFields = null
+                AdditionalFields = null,
+                BookingSource = "External"
             };
         }
 

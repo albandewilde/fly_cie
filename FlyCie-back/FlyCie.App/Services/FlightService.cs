@@ -85,7 +85,9 @@ namespace FlyCie.App.Services
             var flightsToRemove = flights.FindAll( f => externalFlights.ToList().FindIndex( ef => ef.From == f.From && ef.To == f.To ) >= 0 );
             flights.RemoveAll( f => flightsToRemove.Contains( f ) );
 
-            FlightsData.SetFlights( flights, externalFlights.ToList() );
+            _logger.LogInformation( "Fetching MTD Flights" );
+            var mtdFlights = await _externalService.GetMTDFlights();
+            FlightsData.SetFlights( flights, externalFlights.ToList(), mtdFlights.ToList() );
         }
 
         protected override async Task ExecuteAsync( CancellationToken stoppingToken )

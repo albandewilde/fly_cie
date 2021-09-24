@@ -1,6 +1,8 @@
-﻿using FlyCie.MTD.WebHost.Services;
+﻿using FlyCie.Model;
+using FlyCie.MTD.WebHost.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FlyCie.MTD.WebHost.Controllers
@@ -27,6 +29,12 @@ namespace FlyCie.MTD.WebHost.Controllers
         public async Task<IActionResult> GetMTDFlights()
         {            
             return Ok( await _mtdService.RequestFlights() );
+        }
+
+        [HttpPost("BookTicket")]
+        public async Task<IActionResult> BookTicket( List<Ticket> tickets, string userType, uint nbAdditionalLuggage )
+        {            
+            return Ok( await _mtdService.PostBookTicket( tickets, userType, nbAdditionalLuggage ) );
         }
     }
 }

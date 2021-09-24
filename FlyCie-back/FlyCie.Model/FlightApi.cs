@@ -6,5 +6,6 @@ namespace FlyCie.Model
     {
         public IEnumerable<Model.External.FlightOptions> Options { get; set; }
         public IDictionary<string, object>? AdditionalFields { get; set; }
+        public string BookingSource { get; set; }
     }
 }
