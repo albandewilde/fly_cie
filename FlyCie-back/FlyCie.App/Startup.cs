@@ -29,6 +29,7 @@ namespace FlyCie.App
             services.Configure<ExternalApiOptions>( o =>
             {
                 o.ExternalApiUrl = Configuration[ "ExternalApiUrl" ];
+                o.MTDApiUrl = Configuration[ "MTDApiUrl" ];
             } );
         }
 

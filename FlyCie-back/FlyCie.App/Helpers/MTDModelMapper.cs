@@ -11,11 +11,11 @@ namespace FlyCie.App.Helpers
         {
             return new FlightApi
             {
-                AvailablePlaces = flight.AvailableSeats,
-                FlightCode = flight.IdFlight,
-                From = flight.DeparturePlace,
-                Price = flight.BasePrice,
-                To = flight.ArrivalPlace,
+                availablePlaces = flight.availableSeats,
+                flightCode = flight.idFlight,
+                from = flight.departurePlace,
+                price = flight.basePrice,
+                to = flight.arrivalPlace,
                 Options = new List<FlightOptions>
                 {
                     new FlightOptions
@@ -23,7 +23,8 @@ namespace FlyCie.App.Helpers
                         option_type = "AdditionalLuggage",
                         price = 100
                     }
-                }
+                },
+                BookingSource = "MTD"
             };
         }
     }

@@ -28,7 +28,7 @@ namespace FlyCie.MTD.WebHost.Services
             _httpClient = new HttpClient();
         }
 
-        public async Task<IEnumerable<FlightApi>> RequestFlights()
+        public async Task<IEnumerable<MTDFlight>> RequestFlights()
         {
             var requestUrl = $"{_options.ApiUrl}/getAllFlights";
 
@@ -37,9 +37,7 @@ namespace FlyCie.MTD.WebHost.Services
                 requestMessage.Headers.Add( "ApiKey", _options.ApiKey );
                 var response = await _httpClient.SendAsync( requestMessage );
                 var resString = await response.Content.ReadAsStringAsync();
-                var flights = JsonSerializer.Deserialize<List<MTDFlight>>( resString );
-
-                return flights.Select( f => ModelMapper.MapToFlightApi( f ) );
+                return JsonSerializer.Deserialize<List<MTDFlight>>( resString );
             }
         }
 

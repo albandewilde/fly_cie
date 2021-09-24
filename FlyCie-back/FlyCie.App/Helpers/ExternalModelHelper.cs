@@ -10,12 +10,12 @@ namespace FlyCie.App.Helpers
         {
             return new Flight
             {
-                AvailablePlaces = flight.plane.total_seats - flight.seats_booked,
-                FlightCode = flight.code,
-                From = flight.departure,
-                To = flight.arrival,
-                Price = flight.base_price,
-                TotalPlaces = flight.plane.total_seats
+                availablePlaces = flight.plane.total_seats - flight.seats_booked,
+                flightCode = flight.code,
+                from = flight.departure,
+                to = flight.arrival,
+                price = flight.base_price,
+                totalPlaces = flight.plane.total_seats
             };
         }
 
@@ -23,12 +23,12 @@ namespace FlyCie.App.Helpers
         {
             return new FlightApi
             {
-                AvailablePlaces = flight.plane.total_seats - flight.seats_booked,
-                FlightCode = flight.code,
-                From = flight.departure,
-                To = flight.arrival,
-                Price = flight.base_price,
-                TotalPlaces = flight.plane.total_seats,
+                availablePlaces = flight.plane.total_seats - flight.seats_booked,
+                flightCode = flight.code,
+                from = flight.departure,
+                to = flight.arrival,
+                price = flight.base_price,
+                totalPlaces = flight.plane.total_seats,
                 Options = flight.options,
                 AdditionalFields = null,
                 BookingSource = "External"
@@ -39,12 +39,12 @@ namespace FlyCie.App.Helpers
         {
             return new FlightApi
             {
-                AvailablePlaces = flight.AvailablePlaces,
-                FlightCode = flight.FlightCode,
-                From = flight.From,
-                To = flight.To,
-                Price = flight.Price,
-                TotalPlaces = flight.TotalPlaces,
+                availablePlaces = flight.availablePlaces,
+                flightCode = flight.flightCode,
+                from = flight.from,
+                to = flight.to,
+                price = flight.price,
+                totalPlaces = flight.totalPlaces,
                 Options = null,
                 AdditionalFields = null
             };
@@ -54,21 +54,21 @@ namespace FlyCie.App.Helpers
         {
             return new Model.External.Ticket
             {
-                code = ticket.Flight.FlightCode,
+                code = ticket.Flight.flightCode,
                 customer_name = ticket.LastName,
                 customer_nationality = ticket.Nationality,
                 flight = new Model.External.Flight
                 {
-                    arrival = ticket.Flight.To.ToString(),
-                    code = ticket.Flight.FlightCode,
+                    arrival = ticket.Flight.to.ToString(),
+                    code = ticket.Flight.flightCode,
                     base_price = Convert.ToInt32( ticket.Price ),
-                    departure = ticket.Flight.From.ToString(),
+                    departure = ticket.Flight.from.ToString(),
                     plane = new Model.External.Plane
                     {
                         name = string.Empty,
-                        total_seats = ticket.Flight.TotalPlaces
+                        total_seats = ticket.Flight.totalPlaces
                     },
-                    seats_booked = ticket.Flight.TotalPlaces - ticket.Flight.AvailablePlaces
+                    seats_booked = ticket.Flight.totalPlaces - ticket.Flight.availablePlaces
                 },
                 date = ticket.Date.ToString("dd-MM-YYYY"),
                 options = new List<Model.External.FlightOptions>(),

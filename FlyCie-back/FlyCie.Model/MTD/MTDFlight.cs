@@ -2,11 +2,11 @@
 {
     public class MTDFlight
     {
-        public string IdFlight { get; set; }
-        public double BasePrice { get; set; }
-        public double AdditionalLuggagePrice { get; set; }
-        public string DeparturePlace { get; set; }
-        public string ArrivalPlace { get; set; }
-        public int AvailableSeats { get; set; }
+        public string idFlight { get; set; }
+        public double basePrice { get; set; }
+        public double additionalLuggagePrice { get; set; }
+        public string departurePlace { get; set; }
+        public string arrivalPlace { get; set; }
+        public int availableSeats { get; set; }
     }
 }

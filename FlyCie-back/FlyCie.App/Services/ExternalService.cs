@@ -71,10 +71,9 @@ namespace FlyCie.App.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync( $"{_options.ExternalApiUrl}/api/external/GetFlights" );
+                var response = await _httpClient.GetAsync( $"{_options.MTDApiUrl}/GetMTDFlights" );
                 var responseString = await response.Content.ReadAsStringAsync();
                 var externalFlights = JsonSerializer.Deserialize<List<MTDFlight>>( responseString );
-
                 return from ef in externalFlights select MTDModelMapper.MapToFlightApi( ef );
             }
             catch( Exception e )
@@ -83,10 +82,40 @@ namespace FlyCie.App.Services
                 return null;
             }
         }
+
+        public async Task<Model.MTD.MTDOrder> BookMTDTicket( List<Ticket> tickets, string userType, uint nbAdditionalLuggage )
+        {
+            try
+            {
+                var mtdPayload = new MTDPayload
+                {
+                    Tickets = tickets,
+                    UserType = userType,
+                    NbAdditionalLuggage = nbAdditionalLuggage
+                };
+
+                _logger.LogInformation( $"Trying to send request to book ticket" );
+                var content = JsonSerializer.Serialize( mtdPayload );
+                var response = await _httpClient.PostAsync(
+                    $"{_options.ExternalApiUrl}/BookTicket",
+                    new StringContent( content, Encoding.UTF8, "application/json" )
+                );
+                var responseString = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation( "Successfully booked a ticket." );
+
+                return JsonSerializer.Deserialize<Model.MTD.MTDOrder>( responseString );
+            }
+            catch ( Exception e )
+            {
+                _logger.LogError( "An error occurred while booking a ticket", e );
+                return null;
+            }
+        }
     }
     public sealed class ExternalApiOptions
     {
         public string ExternalApiUrl { get; set; }
+        public string MTDApiUrl { get; set; }
     }
 }
 

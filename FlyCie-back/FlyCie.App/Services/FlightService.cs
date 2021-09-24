@@ -27,62 +27,62 @@ namespace FlyCie.App.Services
 
             flights.Add( new Flight
             {
-                FlightCode = "DT3712",
-                From = Airport.DTW.ToString(),
-                To = Airport.CDG.ToString(),
-                TotalPlaces = 700,
-                AvailablePlaces = 700,
-                Price = 700
+                flightCode = "DT3712",
+                from = Airport.DTW.ToString(),
+                to = Airport.CDG.ToString(),
+                totalPlaces = 700,
+                availablePlaces = 700,
+                price = 700
             } );
             flights.Add( new Flight
             {
-                FlightCode = "DT3333",
-                From = Airport.DTW.ToString(),
-                To = Airport.JFK.ToString(),
-                TotalPlaces = 300,
-                AvailablePlaces = 300,
-                Price = 300
+                flightCode = "DT3333",
+                from = Airport.DTW.ToString(),
+                to = Airport.JFK.ToString(),
+                totalPlaces = 300,
+                availablePlaces = 300,
+                price = 300
             } );
             flights.Add( new Flight
             {
-                FlightCode = "AF2458",
-                From = Airport.CDG.ToString(),
-                To = Airport.JFK.ToString(),
-                TotalPlaces = 1000,
-                AvailablePlaces = 1000,
-                Price = 1000
+                flightCode = "AF2458",
+                from = Airport.CDG.ToString(),
+                to = Airport.JFK.ToString(),
+                totalPlaces = 1000,
+                availablePlaces = 1000,
+                price = 1000
             } );
             flights.Add( new Flight
             {
-                FlightCode = "AF9545",
-                From = Airport.CDG.ToString(),
-                To = Airport.DTW.ToString(),
-                TotalPlaces = 700,
-                AvailablePlaces = 700,
-                Price = 700
+                flightCode = "AF9545",
+                from = Airport.CDG.ToString(),
+                to = Airport.DTW.ToString(),
+                totalPlaces = 700,
+                availablePlaces = 700,
+                price = 700
             } );
             flights.Add( new Flight
             {
-                FlightCode = "JF1296",
-                From = Airport.JFK.ToString(),
-                To = Airport.CDG.ToString(),
-                TotalPlaces = 1000,
-                AvailablePlaces = 1000,
-                Price = 1000
+                flightCode = "JF1296",
+                from = Airport.JFK.ToString(),
+                to = Airport.CDG.ToString(),
+                totalPlaces = 1000,
+                availablePlaces = 1000,
+                price = 1000
             } );
             flights.Add( new Flight
             {
-                FlightCode = "JF1784",
-                From = Airport.JFK.ToString(),
-                To = Airport.DTW.ToString(),
-                TotalPlaces = 300,
-                AvailablePlaces = 300,
-                Price = 300
+                flightCode = "JF1784",
+                from = Airport.JFK.ToString(),
+                to = Airport.DTW.ToString(),
+                totalPlaces = 300,
+                availablePlaces = 300,
+                price = 300
             } );
 
             _logger.LogInformation( "Fetching external flights." );
             var externalFlights = await _externalService.GetExternalFlights();
-            var flightsToRemove = flights.FindAll( f => externalFlights.ToList().FindIndex( ef => ef.From == f.From && ef.To == f.To ) >= 0 );
+            var flightsToRemove = flights.FindAll( f => externalFlights.ToList().FindIndex( ef => ef.from == f.from && ef.to == f.to ) >= 0 );
             flights.RemoveAll( f => flightsToRemove.Contains( f ) );
 
             _logger.LogInformation( "Fetching MTD Flights" );

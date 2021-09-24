@@ -16,8 +16,8 @@ namespace FlyCie.App.Services
         public static IEnumerable<FlightApi> GetAvailableFlights()
         {
             var result = new List<FlightApi>();
-            result.AddRange( FlightList.Where( f => f.AvailablePlaces > 0 ).Select( f => ExternalModelHelper.FlightToApi( f ) ) );
-            result.AddRange( ExternalFlights.Where( f => f.AvailablePlaces > 0 ) );
+            result.AddRange( FlightList.Where( f => f.availablePlaces > 0 ).Select( f => ExternalModelHelper.FlightToApi( f ) ) );
+            result.AddRange( ExternalFlights.Where( f => f.availablePlaces > 0 ) );
             return result;
         }
 
@@ -27,17 +27,17 @@ namespace FlyCie.App.Services
             List<FlightApi> mtdFlights )
         {
             _flights = flights;
+            externalFlights.AddRange( mtdFlights );
             _externalFlights = externalFlights;
-            _externalFlights.ToList().AddRange( mtdFlights );
         }
 
         public static Flight GetFlight( string flightId, bool isOurs )
         {
             if( isOurs )
             {
-                return FlightList.FirstOrDefault( f => string.Equals( f.FlightCode, flightId ) );
+                return FlightList.FirstOrDefault( f => string.Equals( f.flightCode, flightId ) );
             }
-            return ExternalFlights.FirstOrDefault( f => string.Equals( f.FlightCode, flightId ) );
+            return ExternalFlights.FirstOrDefault( f => string.Equals( f.flightCode, flightId ) );
         }
 
         public static bool HasAvailablePlace( string flightId, DateTime selectedDate )
@@ -46,7 +46,7 @@ namespace FlyCie.App.Services
             var tickets = TicketsData.TicketList;
 
             var bookedPlaces = tickets.Where( t => t.Flight == flight && t.Date == selectedDate ).Count();
-            return bookedPlaces < flight.TotalPlaces;
+            return bookedPlaces < flight.totalPlaces;
         }
 
         public static Dictionary<string, List<Flight>> GetRoundTrips( List<string> flightIds )
@@ -58,14 +58,14 @@ namespace FlyCie.App.Services
             while( flightIds.Count > 0 )
             {
                 var flight = GetFlight( flightIds[ 0 ], true );
-                var roundTrip = FlightList.FirstOrDefault( f => f.From == flight.To && f.To == flight.From );
+                var roundTrip = FlightList.FirstOrDefault( f => f.from == flight.to && f.to == flight.from );
 
-                if ( !(roundTrip is null) && flightIds.Contains( roundTrip.FlightCode ) )
+                if ( !(roundTrip is null) && flightIds.Contains( roundTrip.flightCode ) )
                 {
                     result[ "RoundTrips" ].Add( flight );
                     result[ "RoundTrips" ].Add( roundTrip );
 
-                    flightIds.Remove( roundTrip.FlightCode );
+                    flightIds.Remove( roundTrip.flightCode );
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace FlyCie.App.Services
 
         public static bool IsOurTrip( string flightCode )
         {
-            if( FlightList.Where( f => f.FlightCode == flightCode ).Count() > 0 )
+            if( FlightList.Where( f => f.flightCode == flightCode ).Count() > 0 )
             {
                 return true;
             }

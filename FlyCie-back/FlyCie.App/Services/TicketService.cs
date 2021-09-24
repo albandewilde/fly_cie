@@ -55,14 +55,14 @@ namespace FlyCie.App.Services
 
                 var ticket = await CreateTicket( roundTrip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, supplement, true );
                 result.Add( ticket );
-                FlightsData.FlightList.Where( f => f.FlightCode == roundTrip.FlightCode ).First().AvailablePlaces -= 1;
+                FlightsData.FlightList.Where( f => f.flightCode == roundTrip.flightCode ).First().availablePlaces -= 1;
             }
 
             foreach( var (trip, index) in trips["OneWayTrips"].Select( ( t, index ) => (t, index) ) )
             {
                 var ticket = await CreateTicket( trip, ticketForm.LastName, ticketForm.FirstName, ticketForm.Nationality, ticketForm.Currency, ticketForm.LoungeSupplement, false );
                 result.Add( ticket );
-                FlightsData.FlightList.Where( f => f.FlightCode == trip.FlightCode ).First().AvailablePlaces -= 1;
+                FlightsData.FlightList.Where( f => f.flightCode == trip.flightCode ).First().availablePlaces -= 1;
             }
             _tickets.AddRange( result );
             return result;
@@ -70,8 +70,8 @@ namespace FlyCie.App.Services
 
         private async Task<Ticket> CreateTicket( Flight flight, string lastName, string firstName, string nat, string currencyName, bool loungeSupplement, bool isRoundTrip )
         {
-            var price = isRoundTrip ? flight.Price * 0.9 : flight.Price;
-            if( Enum.Parse<Airport>( flight.From ) != Airport.DTW )
+            var price = isRoundTrip ? flight.price * 0.9 : flight.price;
+            if( Enum.Parse<Airport>( flight.from ) != Airport.DTW )
             {
                 if( loungeSupplement )
                 {
@@ -165,7 +165,7 @@ namespace FlyCie.App.Services
                     {
                         Flight = flight,
                         Date = ticketForm.SelectedDate,
-                        Price = flight.Price,
+                        Price = flight.price,
                         FirstName = ticketForm.FirstName,
                         LastName = ticketForm.LastName,
                         Nationality = ticketForm.Nationality,

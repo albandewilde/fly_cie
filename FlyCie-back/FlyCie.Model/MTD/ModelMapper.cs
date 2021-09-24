@@ -9,11 +9,11 @@ namespace FlyCie.Model.MTD
         {
             return new FlightApi
             {
-                AvailablePlaces = flight.AvailableSeats,
-                FlightCode = flight.IdFlight,
-                From = flight.DeparturePlace,
-                Price = flight.BasePrice,
-                To = flight.ArrivalPlace,
+                availablePlaces = flight.availableSeats,
+                flightCode = flight.idFlight,
+                from = flight.departurePlace,
+                price = flight.basePrice,
+                to = flight.arrivalPlace,
                 Options = new List<FlightOptions>
                 {
                     new FlightOptions
